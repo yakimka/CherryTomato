@@ -1,0 +1,5 @@
+PyQt5
+qroundprogressbar
+pytest
+pytest-qt
+pytest-mock
