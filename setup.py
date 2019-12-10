@@ -6,5 +6,5 @@ setup(name='CherryTomato',
       packages=['CherryTomato'],
       install_requires=['PyQt5', 'qroundprogressbar'],
       url='https://github.com/yakimka/CherryTomato',
-      license='MIT',
+      license='GPL',
       entry_points={'gui_scripts': ['cherry_tomato = CherryTomato.main']})
