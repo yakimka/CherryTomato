@@ -113,13 +113,13 @@ border-radius: 20px;</string>
   <customwidget>
    <class>QRoundProgressBar</class>
    <extends>QWidget</extends>
-   <header>tomato_timer.widget</header>
+   <header>CherryTomato.widget</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>QRoundPushbutton</class>
    <extends>QPushButton</extends>
-   <header>tomato_timer.widget</header>
+   <header>CherryTomato.widget</header>
   </customwidget>
  </customwidgets>
  <resources/>
