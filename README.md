@@ -1,5 +1,7 @@
 # CherryTomato
 
+![Screenshot](assets/Screenshot_20191211_004536.png)
+
 ## Features
 
 * Easy to use, flexible Pomodoro Technique timer.
