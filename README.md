@@ -22,6 +22,12 @@ CherryTomato can be used without installation (by executing `main.py`). However,
 
 `python3 setup.py install`
 
+### Arch Linux
+
+Also you can install CherryTomato from AUR:
+
+`yaourt -S cherrytomato`
+
 
 ## Credits
 

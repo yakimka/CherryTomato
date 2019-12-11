@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=CherryTomato
+GenericName=Easy to use, flexible PyQt5 Pomodoro Technique timer
+Icon=cherrytomato
+Exec=cherry_tomato
+Terminal=false
+Categories=Utility
