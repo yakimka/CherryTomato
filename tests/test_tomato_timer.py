@@ -2,7 +2,11 @@ from itertools import cycle
 
 import pytest
 
-from CherryTomato.tomato_timer import TomatoTimer
+from CherryTomato.settings import State
+
+STATE_TOMATO = State('tomato', 100)
+STATE_BREAK = State('break', 25)
+STATE_LONG_BREAK = State('long_break', 50)
 
 
 def test_instance(tomato):
@@ -81,11 +85,11 @@ def test_abort(mock_for_abort, tomato):
     (False, False)
 ])
 def test_abort_with_switch_to_tomato_flag(mock_for_abort, tomato_on_break, flag_value, changed):
-    tomato_on_break.SWITCH_TO_TOMATO_ON_ABORT = flag_value
+    tomato_on_break.settings.SWITCH_TO_TOMATO_ON_ABORT_DEFAULT = flag_value
 
     tomato_on_break.abort()
 
-    assert (tomato_on_break.STATE_BREAK != tomato_on_break.state) is changed
+    assert ('break' != tomato_on_break.state) is changed
 
 
 def test_create_timer(mock_qt_timer, tomato):
@@ -93,17 +97,17 @@ def test_create_timer(mock_qt_timer, tomato):
 
 
 @pytest.mark.parametrize('state,expected', [
-    (TomatoTimer.STATE_TOMATO, True),
-    (TomatoTimer.STATE_BREAK, False),
-    (TomatoTimer.STATE_LONG_BREAK, False),
+    (STATE_TOMATO, True),
+    (STATE_BREAK, False),
+    (STATE_LONG_BREAK, False),
 ])
 def test_is_tomato(tomato, state, expected):
     tomato.state = state
     assert tomato.isTomato() is expected
 
 
-def test_change_state(tomato):
-    for i, state in enumerate(cycle([tomato.STATE_TOMATO, tomato.STATE_BREAK])):
+def test_change_state(tomato, settings):
+    for i, state in enumerate(cycle([settings.stateTomato, settings.stateBreak])):
         assert tomato.state == state
         assert tomato.seconds == state.time
         tomato.changeState()
@@ -112,18 +116,18 @@ def test_change_state(tomato):
 
 
 @pytest.mark.parametrize('tomatoes,const_value,expected', [
-    (0, 4, TomatoTimer.STATE_BREAK),
-    (3, 4, TomatoTimer.STATE_BREAK),
-    (4, 4, TomatoTimer.STATE_LONG_BREAK),
-    (5, 4, TomatoTimer.STATE_BREAK),
-    (12, 1, TomatoTimer.STATE_LONG_BREAK),
-    (1, 10, TomatoTimer.STATE_BREAK),
-    (20, 10, TomatoTimer.STATE_LONG_BREAK),
-    (100, 10, TomatoTimer.STATE_LONG_BREAK),
+    (0, 4, STATE_BREAK),
+    (3, 4, STATE_BREAK),
+    (4, 4, STATE_LONG_BREAK),
+    (5, 4, STATE_BREAK),
+    (12, 1, STATE_LONG_BREAK),
+    (1, 10, STATE_BREAK),
+    (20, 10, STATE_LONG_BREAK),
+    (100, 10, STATE_LONG_BREAK),
 
 ])
 def test_change_state_to_long_break(tomato, tomatoes, const_value, expected):
-    tomato.TOMATOS_BEFORE_LONG_BREAK = const_value
+    tomato.settings.REPEAT_DEFAULT = const_value
     tomato.tomatoes = tomatoes
 
     tomato.changeState()
@@ -137,4 +141,4 @@ def test_reset(tomato):
 
     tomato.reset()
 
-    assert tomato.seconds == tomato.STATE_TOMATO.time
+    assert tomato.seconds == 100
