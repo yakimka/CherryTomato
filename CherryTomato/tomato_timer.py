@@ -66,7 +66,6 @@ class TomatoTimer(QObject):
             if self._isNeedAutoStop():
                 self.stop()
             self.notifyTimerIsOver()
-
         self.notifyAboutAnyChange()
 
     def isTomato(self):

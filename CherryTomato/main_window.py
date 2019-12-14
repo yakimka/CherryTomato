@@ -9,8 +9,6 @@ from CherryTomato.main_ui import Ui_MainWindow
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.tomato_timer import TomatoTimer
 
-settings = CherryTomatoSettings()
-
 
 class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -20,7 +18,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
         self.setWindowIcon(QIcon(APP_ICON))
 
-        self.settings = settings
+        self.settings = CherryTomatoSettings()
         self.setWindowSizeAndPosition()
 
         self.tomatoTimer = TomatoTimer()
@@ -97,22 +95,16 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
     @Qt.pyqtSlot()
     def do_start(self):
         # trigger through proxy
-        self.tomatoTimer.start()
-
-    @Qt.pyqtSlot()
-    def do_stop(self):
-        # trigger through proxy
-        self.tomatoTimer.abort()
+        if not self.tomatoTimer.running:
+            self.tomatoTimer.start()
+        else:
+            self.tomatoTimer.abort()
 
     def changeButtonState(self):
         if not self.tomatoTimer.running:
             self.button.setImage('play.png')
-            self.button.clicked.disconnect()
-            self.button.clicked.connect(self.do_start)
         else:
             self.button.setImage('stop.png')
-            self.button.clicked.disconnect()
-            self.button.clicked.connect(self.do_stop)
 
     def setRed(self):
         # https://coolors.co/eff0f1-d11f2a-8da1b9-95adb6-fad0cf

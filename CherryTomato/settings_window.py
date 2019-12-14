@@ -7,8 +7,6 @@ from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.settings_ui import Ui_Settings
 
 
-settings = CherryTomatoSettings()
-
 class Settings(QtWidgets.QWidget, Ui_Settings):
     closing = pyqtSignal()
 
@@ -18,20 +16,21 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.setupUi(self)
 
         self.setWindowIcon(QIcon(APP_ICON))
+        self.settings = CherryTomatoSettings()
 
-        state_tomato = settings.stateTomato
+        state_tomato = self.settings.stateTomato
         self.stateTomato.setValue(int(state_tomato.time / 60))
-        state_break = settings.stateBreak
+        state_break = self.settings.stateBreak
         self.stateBreak.setValue(int(state_break.time / 60))
-        state_long_break = settings.stateLongBreak
+        state_long_break = self.settings.stateLongBreak
         self.stateLongBreak.setValue(int(state_long_break.time / 60))
-        self.repeat.setValue(settings.repeat)
+        self.repeat.setValue(self.settings.repeat)
 
-        self.notification.setChecked(settings.notification)
-        self.interrupt.setChecked(settings.interrupt)
-        self.autoStopTomato.setChecked(settings.autoStopTomato)
-        self.autoStopBreak.setChecked(settings.autoStopBreak)
-        self.switchToTomatoOnAbort.setChecked(settings.switchToTomatoOnAbort)
+        self.notification.setChecked(self.settings.notification)
+        self.interrupt.setChecked(self.settings.interrupt)
+        self.autoStopTomato.setChecked(self.settings.autoStopTomato)
+        self.autoStopBreak.setChecked(self.settings.autoStopBreak)
+        self.switchToTomatoOnAbort.setChecked(self.settings.switchToTomatoOnAbort)
 
     def closeEvent(self, e):
         e.accept()
@@ -39,13 +38,13 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.closing.emit()
 
     def updateSettings(self):
-        settings.stateTomato = self.stateTomato.value() * 60
-        settings.stateBreak = self.stateBreak.value() * 60
-        settings.stateLongBreak = self.stateLongBreak.value() * 60
-        settings.repeat = self.repeat.value()
+        self.settings.stateTomato = self.stateTomato.value() * 60
+        self.settings.stateBreak = self.stateBreak.value() * 60
+        self.settings.stateLongBreak = self.stateLongBreak.value() * 60
+        self.settings.repeat = self.repeat.value()
 
-        settings.notification = self.notification.isChecked()
-        settings.interrupt = self.interrupt.isChecked()
-        settings.autoStopTomato = self.autoStopTomato.isChecked()
-        settings.autoStopBreak = self.autoStopBreak.isChecked()
-        settings.switchToTomatoOnAbort = self.switchToTomatoOnAbort.isChecked()
+        self.settings.notification = self.notification.isChecked()
+        self.settings.interrupt = self.interrupt.isChecked()
+        self.settings.autoStopTomato = self.autoStopTomato.isChecked()
+        self.settings.autoStopBreak = self.autoStopBreak.isChecked()
+        self.settings.switchToTomatoOnAbort = self.switchToTomatoOnAbort.isChecked()

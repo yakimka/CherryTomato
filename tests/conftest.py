@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 
 from CherryTomato.settings import CherryTomatoSettings
@@ -8,9 +10,14 @@ class MockQSettings:
     def value(self, key, default, type=None):
         return default
 
+    setValue = MagicMock()
+    remove = MagicMock()
+
 
 @pytest.fixture
-def settings(monkeypatch, mocker):
+def mock_qsettings(monkeypatch, mocker):
+    qsettings = mocker.patch('CherryTomato.settings.QSettings', MockQSettings)
+
     monkeypatch.setattr(CherryTomatoSettings, 'TOMATO_DEFAULT', 100)
     monkeypatch.setattr(CherryTomatoSettings, 'BREAK_DEFAULT', 25)
     monkeypatch.setattr(CherryTomatoSettings, 'LONG_BREAK_DEFAULT', 50)
@@ -19,7 +26,10 @@ def settings(monkeypatch, mocker):
     monkeypatch.setattr(CherryTomatoSettings, 'AUTO_STOP_BREAK_DEFAULT', False)
     monkeypatch.setattr(CherryTomatoSettings, 'SWITCH_TO_TOMATO_ON_ABORT_DEFAULT', True)
 
-    mocker.patch('CherryTomato.settings.QSettings', MockQSettings)
+    return qsettings
+
+@pytest.fixture
+def settings(mock_qsettings):
     settings = CherryTomatoSettings()
 
     return settings
