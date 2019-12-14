@@ -39,8 +39,8 @@ def test_tick_tomatos_count_from_break(tomato_on_break, qtbot):
     (False, False, False),
 ])
 def test_tick_auto_stop(tomato, qtbot, mock_stop, is_tomato, flag, auto_stop):
-    tomato.AUTO_STOP_TOMATO = flag
-    tomato.AUTO_STOP_BREAK = flag
+    tomato.settings.AUTO_STOP_TOMATO_DEFAULT = flag
+    tomato.settings.AUTO_STOP_BREAK_DEFAULT = flag
     if not is_tomato:
         tomato.changeState()
 

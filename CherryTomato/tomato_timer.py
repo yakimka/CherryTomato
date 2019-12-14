@@ -1,31 +1,21 @@
-from collections import UserString
-
 from PyQt5 import Qt
 from PyQt5.QtCore import QObject, pyqtSignal
 
+from CherryTomato.settings import CherryTomatoSettings
 
-class State(UserString):
-    def __init__(self, seq: object, time: int):
-        self.time = time
-        super().__init__(seq)
+settings = CherryTomatoSettings()
 
 
 class TomatoTimer(QObject):
-    TOMATOS_BEFORE_LONG_BREAK = 4
-    AUTO_STOP_TOMATO = True
-    AUTO_STOP_BREAK = False
-    SWITCH_TO_TOMATO_ON_ABORT = True
-
     TICK_TIME = 64  # ms
-    STATE_TOMATO = State('tomato', 25 * 60)
-    STATE_BREAK = State('break', 5 * 60)
-    STATE_LONG_BREAK = State('long_break', 20 * 60)
 
     stateChanged = pyqtSignal()
     finished = pyqtSignal()
 
     def __init__(self):
         super().__init__()
+
+        self.settings = settings
 
         self.tomatoes = 0
         self.state = None
@@ -54,7 +44,7 @@ class TomatoTimer(QObject):
 
     def abort(self):
         self.stop()
-        if not self.isTomato() and self.SWITCH_TO_TOMATO_ON_ABORT:
+        if not self.isTomato() and self.settings.switchToTomatoOnAbort:
             self.changeState()
         else:
             self.reset()
@@ -76,16 +66,15 @@ class TomatoTimer(QObject):
             if self._isNeedAutoStop():
                 self.stop()
             self.notifyTimerIsOver()
-
         self.notifyAboutAnyChange()
 
     def isTomato(self):
-        return self.state == self.STATE_TOMATO
+        return self.state == self.settings.stateTomato
 
     def _isNeedAutoStop(self):
-        if self.isTomato() and self.AUTO_STOP_TOMATO:
+        if self.isTomato() and self.settings.autoStopTomato:
             return True
-        elif not self.isTomato() and self.AUTO_STOP_BREAK:
+        elif not self.isTomato() and self.settings.autoStopBreak:
             return True
         return False
 
@@ -101,13 +90,18 @@ class TomatoTimer(QObject):
 
     def _statesGen(self):
         while True:
-            yield self.STATE_TOMATO
-            yield self.STATE_LONG_BREAK if self._isTimeForLongBreak() else self.STATE_BREAK
+            yield self.settings.stateTomato
+            yield self.settings.stateLongBreak if self._isTimeForLongBreak() else self.settings.stateBreak
 
     def _isTimeForLongBreak(self):
         if self.tomatoes == 0:
             return False
-        return self.isTomato() and self.tomatoes % self.TOMATOS_BEFORE_LONG_BREAK == 0
+        return self.isTomato() and self.tomatoes % self.settings.repeat == 0
+
+    def updateState(self):
+        if not self.running:
+            self.reset()
+            self.notifyAboutAnyChange()
 
     def reset(self):
         self.seconds = self.state.time

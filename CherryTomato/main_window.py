@@ -1,19 +1,16 @@
 import os
 
 from PyQt5 import Qt, QtCore
-from PyQt5.QtCore import QSettings, QSize, QPoint
 from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon
 from PyQt5.QtMultimedia import QSound
 
-from CherryTomato import about, APP_ICON, MEDIA_DIR
+from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
 from CherryTomato.main_ui import Ui_MainWindow
+from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.tomato_timer import TomatoTimer
 
 
-class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
-    APP_TITLE = 'CherryTomato'
-    NOTIFICATION_ON = True
-
+class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -21,10 +18,8 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
 
         self.setWindowIcon(QIcon(APP_ICON))
 
-        self.settings = QSettings('yakimka', self.APP_TITLE)
-        # Initial window size/pos last saved. Use default values for first time
-        self.resize(self.settings.value('size', QSize(400, 520)))
-        self.move(self.settings.value('pos', QPoint(50, 50)))
+        self.settings = CherryTomatoSettings()
+        self.setWindowSizeAndPosition()
 
         self.tomatoTimer = TomatoTimer()
 
@@ -34,8 +29,27 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
 
         self.display()
 
-        self.aboutWindow = about.About()
+        self.aboutWindow = about_window.About()
         self.actionAbout.triggered.connect(self.showAboutWindow)
+        self.settingsWindow = settings_window.Settings()
+        self.actionSettings.triggered.connect(self.showSettingsWindow)
+        self.settingsWindow.closing.connect(self.update)
+
+    def update(self):
+        self.tomatoTimer.updateState()
+
+    def setWindowSizeAndPosition(self):
+        # Initial window size/pos last saved. Use default values for first time
+        while True:
+            try:
+                self.resize(self.settings.size)
+                self.move(self.settings.position)
+            except TypeError:
+                del self.settings.size
+                del self.settings.position
+                continue
+            else:
+                break
 
     def showAboutWindow(self):
         centerX, centerY = self.getCenterPoint()
@@ -43,6 +57,13 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
         y = int(centerY - self.aboutWindow.height() / 2)
         self.aboutWindow.move(x, y)
         self.aboutWindow.show()
+
+    def showSettingsWindow(self):
+        centerX, centerY = self.getCenterPoint()
+        x = int(centerX - self.settingsWindow.width() / 2)
+        y = int(centerY - self.settingsWindow.height() / 2)
+        self.settingsWindow.move(x, y)
+        self.settingsWindow.show()
 
     def getCenterPoint(self):
         x = int(self.x() + self.width() / 2)
@@ -52,8 +73,8 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, e):
         # Write window size and position to config file
-        self.settings.setValue('size', self.size())
-        self.settings.setValue('pos', self.pos())
+        self.settings.size = self.size()
+        self.settings.position = self.pos()
 
         e.accept()
 
@@ -74,22 +95,16 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
     @Qt.pyqtSlot()
     def do_start(self):
         # trigger through proxy
-        self.tomatoTimer.start()
-
-    @Qt.pyqtSlot()
-    def do_stop(self):
-        # trigger through proxy
-        self.tomatoTimer.abort()
+        if not self.tomatoTimer.running:
+            self.tomatoTimer.start()
+        else:
+            self.tomatoTimer.abort()
 
     def changeButtonState(self):
         if not self.tomatoTimer.running:
             self.button.setImage('play.png')
-            self.button.clicked.disconnect()
-            self.button.clicked.connect(self.do_start)
         else:
             self.button.setImage('stop.png')
-            self.button.clicked.disconnect()
-            self.button.clicked.connect(self.do_stop)
 
     def setRed(self):
         # https://coolors.co/eff0f1-d11f2a-8da1b9-95adb6-fad0cf
@@ -130,12 +145,13 @@ class TomatoTimerWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot()
     def setFocusOnWindowAndPlayNotification(self):
-        self.raise_()
-        self.show()
-        self.activateWindow()
-        if self.windowState() == QtCore.Qt.WindowMinimized:
-            # Window is minimised. Restore it.
-            self.setWindowState(QtCore.Qt.WindowNoState)
+        if self.settings.interrupt:
+            self.raise_()
+            self.show()
+            self.activateWindow()
+            if self.windowState() == QtCore.Qt.WindowMinimized:
+                # Window is minimised. Restore it.
+                self.setWindowState(QtCore.Qt.WindowNoState)
 
-        if self.NOTIFICATION_ON:
+        if self.settings.notification:
             QSound.play(os.path.join(MEDIA_DIR, 'sound.wav'))
