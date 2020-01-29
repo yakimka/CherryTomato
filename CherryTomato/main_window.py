@@ -80,10 +80,10 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot()
     def display(self):
-        TOMATO_SIGN = '˙'
+        TOMATO_SIGN = '🍅'
         minutes, seconds = int(self.tomatoTimer.seconds // 60), int(self.tomatoTimer.seconds % 60)
-        display = f'\n{minutes:02d}:{seconds:02d}\n{TOMATO_SIGN * self.tomatoTimer.tomatoes}'
-        self.progress.setFormat(display)
+        self.progress.setFormat(f'{minutes:02d}:{seconds:02d}')
+        self.progress.setSecondFormat(f'{TOMATO_SIGN}x{self.tomatoTimer.tomatoes}')
         self.progress.setValue(self.tomatoTimer.progress)
         self.changeButtonState()
 
@@ -94,7 +94,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot()
     def do_start(self):
-        # trigger through proxy
+        # TODO trigger through proxy
         if not self.tomatoTimer.running:
             self.tomatoTimer.start()
         else:
