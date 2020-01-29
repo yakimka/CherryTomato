@@ -38,8 +38,8 @@ def settings(mock_qsettings):
 @pytest.fixture
 def tomato(settings, monkeypatch, mocker):
     monkeypatch.setattr(TomatoTimer, 'TICK_TIME', 64)
-    mocker.patch('CherryTomato.tomato_timer.settings', settings)
     tomato = TomatoTimer()
+    tomato.settings = settings
 
     return tomato
 
