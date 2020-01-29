@@ -3,8 +3,6 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 from CherryTomato.settings import CherryTomatoSettings
 
-settings = CherryTomatoSettings()
-
 
 class TomatoTimer(QObject):
     TICK_TIME = 64  # ms
@@ -15,7 +13,7 @@ class TomatoTimer(QObject):
     def __init__(self):
         super().__init__()
 
-        self.settings = settings
+        self.settings = CherryTomatoSettings()
 
         self.tomatoes = 0
         self.state = None
