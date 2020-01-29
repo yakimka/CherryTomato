@@ -1,3 +1,4 @@
+from PyQt5 import Qt
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 
@@ -15,3 +16,9 @@ class About(QtWidgets.QWidget, Ui_About):
         self.labelTitle.setText(title)
 
         self.setWindowIcon(QIcon(APP_ICON))
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Qt.Key_Escape:
+            self.close()
+        else:
+            super().keyPressEvent(event)

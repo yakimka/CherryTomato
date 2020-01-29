@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 
@@ -31,6 +31,12 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.autoStopTomato.setChecked(self.settings.autoStopTomato)
         self.autoStopBreak.setChecked(self.settings.autoStopBreak)
         self.switchToTomatoOnAbort.setChecked(self.settings.switchToTomatoOnAbort)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Qt.Key_Escape:
+            self.close()
+        else:
+            super().keyPressEvent(event)
 
     def closeEvent(self, e):
         e.accept()

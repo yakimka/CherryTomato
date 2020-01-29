@@ -140,12 +140,6 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         green = (60, 187, 111)
         self.setColor(lightGreen, green)
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Qt.Key_Escape:
-            self.close()
-        else:
-            super().keyPressEvent(event)
-
     @Qt.pyqtSlot()
     def setFocusOnWindowAndPlayNotification(self):
         if self.settings.interrupt:
