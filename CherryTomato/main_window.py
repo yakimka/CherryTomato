@@ -1,7 +1,7 @@
 import os
 
 from PyQt5 import Qt, QtCore
-from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon
+from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon, QKeySequence
 from PyQt5.QtMultimedia import QSound
 
 from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
@@ -34,6 +34,9 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.settingsWindow = settings_window.Settings()
         self.actionSettings.triggered.connect(self.showSettingsWindow)
         self.settingsWindow.closing.connect(self.update)
+
+        self.actionReset.setShortcut(QKeySequence('Ctrl+R'))
+        self.actionReset.triggered.connect(self.tomatoTimer.reset)
 
     def update(self):
         self.tomatoTimer.updateState()

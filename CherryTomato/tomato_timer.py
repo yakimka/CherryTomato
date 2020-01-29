@@ -47,7 +47,7 @@ class TomatoTimer(QObject):
         if not self.isTomato() and self.settings.switchToTomatoOnAbort:
             self.changeState()
         else:
-            self.reset()
+            self.resetTime()
         self.notifyAboutAnyChange()
 
     def createTimer(self):
@@ -100,10 +100,10 @@ class TomatoTimer(QObject):
 
     def updateState(self):
         if not self.running:
-            self.reset()
+            self.resetTime()
             self.notifyAboutAnyChange()
 
-    def reset(self):
+    def resetTime(self):
         self.seconds = self.state.time
 
     def notifyAboutAnyChange(self):
@@ -111,3 +111,11 @@ class TomatoTimer(QObject):
 
     def notifyTimerIsOver(self):
         self.finished.emit()
+
+    def reset(self):
+        self.stop()
+        self.tomatoes = 0
+        self.state = None
+        del self._states
+        self.changeState()
+        self.notifyAboutAnyChange()
