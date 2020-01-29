@@ -1,6 +1,6 @@
 # CherryTomato
 
-![Screenshot](assets/Screenshot_20191211_004536.png)
+![Screenshot](assets/screenshot.png)
 
 ## Features
 

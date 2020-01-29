@@ -55,6 +55,9 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.actionSettings = QtWidgets.QAction(MainWindow)
         self.actionSettings.setObjectName("actionSettings")
+        self.actionReset = QtWidgets.QAction(MainWindow)
+        self.actionReset.setObjectName("actionReset")
+        self.menuFile.addAction(self.actionReset)
         self.menuFile.addAction(self.actionSettings)
         self.menuFile.addAction(self.actionAbout)
         self.menuBar.addAction(self.menuFile.menuAction())
@@ -68,4 +71,5 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
+        self.actionReset.setText(_translate("MainWindow", "Reset"))
 from CherryTomato.widget import QRoundProgressBar, QRoundPushbutton

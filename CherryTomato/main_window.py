@@ -1,7 +1,7 @@
 import os
 
 from PyQt5 import Qt, QtCore
-from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon
+from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon, QKeySequence
 from PyQt5.QtMultimedia import QSound
 
 from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
@@ -34,6 +34,9 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.settingsWindow = settings_window.Settings()
         self.actionSettings.triggered.connect(self.showSettingsWindow)
         self.settingsWindow.closing.connect(self.update)
+
+        self.actionReset.setShortcut(QKeySequence('Ctrl+R'))
+        self.actionReset.triggered.connect(self.tomatoTimer.reset)
 
     def update(self):
         self.tomatoTimer.updateState()
@@ -80,10 +83,10 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot()
     def display(self):
-        TOMATO_SIGN = '˙'
+        TOMATO_SIGN = '🍅'
         minutes, seconds = int(self.tomatoTimer.seconds // 60), int(self.tomatoTimer.seconds % 60)
-        display = f'\n{minutes:02d}:{seconds:02d}\n{TOMATO_SIGN * self.tomatoTimer.tomatoes}'
-        self.progress.setFormat(display)
+        self.progress.setFormat(f'{minutes:02d}:{seconds:02d}')
+        self.progress.setSecondFormat(f'{TOMATO_SIGN}x{self.tomatoTimer.tomatoes}')
         self.progress.setValue(self.tomatoTimer.progress)
         self.changeButtonState()
 
@@ -94,7 +97,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot()
     def do_start(self):
-        # trigger through proxy
+        # TODO trigger through proxy
         if not self.tomatoTimer.running:
             self.tomatoTimer.start()
         else:
@@ -136,12 +139,6 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         lightGreen = (176, 236, 193)
         green = (60, 187, 111)
         self.setColor(lightGreen, green)
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Qt.Key_Escape:
-            self.close()
-        else:
-            super().keyPressEvent(event)
 
     @Qt.pyqtSlot()
     def setFocusOnWindowAndPlayNotification(self):

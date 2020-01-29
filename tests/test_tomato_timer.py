@@ -64,7 +64,7 @@ def test_stop(mock_qt_timer, tomato):
 
 @pytest.fixture
 def mock_change_reset(mocker):
-    return mocker.patch('CherryTomato.tomato_timer.TomatoTimer.reset')
+    return mocker.patch('CherryTomato.tomato_timer.TomatoTimer.resetTime')
 
 
 @pytest.fixture
@@ -76,7 +76,7 @@ def test_abort(mock_for_abort, tomato):
     tomato.abort()
 
     tomato.stop.assert_called_once()
-    tomato.reset.assert_called_once()
+    tomato.resetTime.assert_called_once()
     assert tomato.isTomato()
 
 
@@ -136,9 +136,9 @@ def test_change_state_to_long_break(tomato, tomatoes, const_value, expected):
     assert tomato.seconds == expected.time
 
 
-def test_reset(tomato):
+def test_reset_time(tomato):
     tomato.seconds = 1
 
-    tomato.reset()
+    tomato.resetTime()
 
     assert tomato.seconds == 100
