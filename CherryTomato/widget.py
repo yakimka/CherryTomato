@@ -46,8 +46,8 @@ class QRoundProgressBar(QRoundProgressBar_):
         self.setFormat('')
         self.setValue(0)
         self.setBarStyle(QRoundProgressBar.BarStyle.LINE)
-        self.setOutlinePenWidth(6)
-        self.setDataPenWidth(6)
+        self.setOutlinePenWidth(4)
+        self.setDataPenWidth(4)
 
     def resizeEvent(self, e):
         self.setMaximumWidth(self.height())
