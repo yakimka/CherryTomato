@@ -14,6 +14,7 @@
 
 ## Requirements
 
+* Python>=3.6
 * PyQt5
 
 ## Installing
