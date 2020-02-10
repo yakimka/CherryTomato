@@ -27,4 +27,3 @@ def test_stop_button_with_tomato(mock_main_window, qtbot):
     qtbot.mouseClick(mock_main_window.button, QtCore.Qt.LeftButton)
 
     assert mock_main_window.tomatoTimer.running is False
-

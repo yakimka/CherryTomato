@@ -90,12 +90,9 @@ class QRoundProgressBar(QRoundProgressBar_):
         secondInnerRect = QRectF(left, top + firstHeight, width, height - firstHeight)
         return firstInnerRect, secondInnerRect, innerRadius
 
-    def drawTwoTexts(self,
-                     p: QPainter,
-                     firstRect: QRectF,
-                     secondRect: QRectF,
-                     innerRadius: float,
-                     value: float):
+    def drawTwoTexts(
+        self, p: QPainter, firstRect: QRectF, secondRect: QRectF, innerRadius: float, value: float
+    ):
         if not self.m_format:
             return
         f = QFont(self.font())

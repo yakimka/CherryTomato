@@ -8,12 +8,18 @@ from PyQt5.QtCore import QCoreApplication
 from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME
 from CherryTomato.main_window import CherryTomatoMainWindow
 
-QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
-QCoreApplication.setApplicationName(APPLICATION_NAME)
 
-app = Qt.QApplication(sys.argv)
+def main():
+    QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
+    QCoreApplication.setApplicationName(APPLICATION_NAME)
 
-watch = CherryTomatoMainWindow()
-watch.show()
+    app = Qt.QApplication(sys.argv)
 
-app.exec_()
+    watch = CherryTomatoMainWindow()
+    watch.show()
+
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()

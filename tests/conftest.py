@@ -16,8 +16,6 @@ class MockQSettings:
 
 @pytest.fixture
 def mock_qsettings(monkeypatch, mocker):
-    qsettings = mocker.patch('CherryTomato.settings.QSettings', MockQSettings)
-
     monkeypatch.setattr(CherryTomatoSettings, 'TOMATO_DEFAULT', 100)
     monkeypatch.setattr(CherryTomatoSettings, 'BREAK_DEFAULT', 25)
     monkeypatch.setattr(CherryTomatoSettings, 'LONG_BREAK_DEFAULT', 50)
@@ -26,13 +24,12 @@ def mock_qsettings(monkeypatch, mocker):
     monkeypatch.setattr(CherryTomatoSettings, 'AUTO_STOP_BREAK_DEFAULT', False)
     monkeypatch.setattr(CherryTomatoSettings, 'SWITCH_TO_TOMATO_ON_ABORT_DEFAULT', True)
 
-    return qsettings
+    return mocker.patch('CherryTomato.settings.QSettings', MockQSettings)
+
 
 @pytest.fixture
 def settings(mock_qsettings):
-    settings = CherryTomatoSettings()
-
-    return settings
+    return CherryTomatoSettings()
 
 
 @pytest.fixture

@@ -89,7 +89,9 @@ class TomatoTimer(QObject):
     def _statesGen(self):
         while True:
             yield self.settings.stateTomato
-            yield self.settings.stateLongBreak if self._isTimeForLongBreak() else self.settings.stateBreak
+            longBreak = self.settings.stateLongBreak
+            break_ = self.settings.stateBreak
+            yield longBreak if self._isTimeForLongBreak() else break_
 
     def _isTimeForLongBreak(self):
         if self.tomatoes == 0:

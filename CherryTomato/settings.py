@@ -105,7 +105,9 @@ class CherryTomatoSettings:
 
     @property
     def switchToTomatoOnAbort(self):
-        return self.settings.value(self.SWITCH_TO_TOMATO_ON_ABORT, self.SWITCH_TO_TOMATO_ON_ABORT_DEFAULT, type=bool)
+        return self.settings.value(
+            self.SWITCH_TO_TOMATO_ON_ABORT, self.SWITCH_TO_TOMATO_ON_ABORT_DEFAULT, type=bool
+        )
 
     @switchToTomatoOnAbort.setter
     def switchToTomatoOnAbort(self, val):
@@ -133,7 +135,9 @@ class CherryTomatoSettings:
 
     @property
     def stateLongBreak(self):
-        return self.settings.value(self.STATE_LONG_BREAK, State('long_break', self.LONG_BREAK_DEFAULT))
+        return self.settings.value(
+            self.STATE_LONG_BREAK, State('long_break', self.LONG_BREAK_DEFAULT)
+        )
 
     @stateLongBreak.setter
     def stateLongBreak(self, min):
