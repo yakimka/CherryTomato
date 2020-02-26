@@ -97,12 +97,12 @@ def test_create_timer(mock_qt_timer, tomato):
 
 
 @pytest.mark.parametrize('state,expected', [
-    (STATE_TOMATO, True),
-    (STATE_BREAK, False),
-    (STATE_LONG_BREAK, False),
+    ('stateTomato', True),
+    ('stateBreak', False),
+    ('stateLongBreak', False),
 ])
 def test_is_tomato(tomato, state, expected):
-    tomato.state = state
+    tomato.stateName = state
     assert tomato.isTomato() is expected
 
 

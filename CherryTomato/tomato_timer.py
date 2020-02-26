@@ -16,7 +16,7 @@ class TomatoTimer(QObject):
         self.settings = CherryTomatoSettings()
 
         self.tomatoes = 0
-        self.state = None
+        self.stateName = None
 
         self.createTimer()
         self.changeState()
@@ -83,15 +83,17 @@ class TomatoTimer(QObject):
         if not hasattr(self, '_states'):
             self._states = self._statesGen()
 
-        self.state = next(self._states)
+        self.stateName = next(self._states)
         self.seconds = self.state.time
+
+    @property
+    def state(self):
+        return getattr(self.settings, self.stateName, None)
 
     def _statesGen(self):
         while True:
-            yield self.settings.stateTomato
-            longBreak = self.settings.stateLongBreak
-            break_ = self.settings.stateBreak
-            yield longBreak if self._isTimeForLongBreak() else break_
+            yield 'stateTomato'
+            yield 'stateLongBreak' if self._isTimeForLongBreak() else 'stateBreak'
 
     def _isTimeForLongBreak(self):
         if self.tomatoes == 0:
@@ -99,9 +101,8 @@ class TomatoTimer(QObject):
         return self.isTomato() and self.tomatoes % self.settings.repeat == 0
 
     def updateState(self):
-        if not self.running:
-            self.resetTime()
-            self.notifyAboutAnyChange()
+        self.resetTime()
+        self.notifyAboutAnyChange()
 
     def resetTime(self):
         self.seconds = self.state.time
