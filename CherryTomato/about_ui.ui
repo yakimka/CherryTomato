@@ -71,7 +71,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string notr="true">Copyright © 2019 yakimka</string>
+      <string notr="true">Copyright © 2019-2020 yakimka</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
