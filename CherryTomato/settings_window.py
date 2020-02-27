@@ -29,6 +29,9 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.autoStopBreak.setChecked(self.settings.autoStopBreak)
         self.switchToTomatoOnAbort.setChecked(self.settings.switchToTomatoOnAbort)
 
+        self.afterStartCommand.setText(self.settings.afterStartCommand)
+        self.afterStopCommand.setText(self.settings.afterStopCommand)
+
     def keyPressEvent(self, event):
         if event.key() == Qt.Qt.Key_Escape:
             self.close()
@@ -51,3 +54,6 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.settings.autoStopTomato = self.autoStopTomato.isChecked()
         self.settings.autoStopBreak = self.autoStopBreak.isChecked()
         self.settings.switchToTomatoOnAbort = self.switchToTomatoOnAbort.isChecked()
+
+        self.settings.afterStartCommand = self.afterStartCommand.text()
+        self.settings.afterStopCommand = self.afterStopCommand.text()

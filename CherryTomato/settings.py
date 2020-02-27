@@ -22,6 +22,10 @@ class Option:
 
 class CherryTomatoSettings:
     options = [
+        Option(STATE_TOMATO, 25 * 60, int),
+        Option(STATE_BREAK, 5 * 60, int),
+        Option(STATE_LONG_BREAK, 15 * 60, int),
+
         Option('size', QSize(400, 520), deleter=True),
         Option('position', QPoint(50, 50), deleter=True),
         Option('notification', True, bool),
@@ -31,9 +35,8 @@ class CherryTomatoSettings:
         Option('autoStopBreak', False, bool),
         Option('switchToTomatoOnAbort', True, bool),
 
-        Option(STATE_TOMATO, 25 * 60, int),
-        Option(STATE_BREAK, 5 * 60, int),
-        Option(STATE_LONG_BREAK, 15 * 60, int),
+        Option('afterStartCommand', '', str),
+        Option('afterStopCommand', '', str),
     ]
 
     def __init__(self, settingsBackend):

@@ -3,7 +3,7 @@ class CommandExecutor:
         self.settings = settings
 
     def onStart(self):
-        print('start')
+        print(self.settings.afterStartCommand)
 
     def onStop(self):
-        print('stop')
+        print(self.settings.afterStopCommand)

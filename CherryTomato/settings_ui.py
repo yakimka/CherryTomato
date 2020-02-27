@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.1
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -87,6 +87,32 @@ class Ui_Settings(object):
         self.switchToTomatoOnAbort.setObjectName("switchToTomatoOnAbort")
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.switchToTomatoOnAbort)
         self.verticalLayout.addWidget(self.checkboxes)
+        self.commands = QtWidgets.QGroupBox(Settings)
+        self.commands.setObjectName("commands")
+        self.formLayout_3 = QtWidgets.QFormLayout(self.commands)
+        self.formLayout_3.setObjectName("formLayout_3")
+        self.afterStartLabel = QtWidgets.QLabel(self.commands)
+        self.afterStartLabel.setObjectName("afterStartLabel")
+        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.afterStartLabel)
+        self.afterStartCommand = QtWidgets.QLineEdit(self.commands)
+        self.afterStartCommand.setObjectName("afterStartCommand")
+        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.afterStartCommand)
+        self.afterStopLabel = QtWidgets.QLabel(self.commands)
+        self.afterStopLabel.setObjectName("afterStopLabel")
+        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.afterStopLabel)
+        self.afterStopCommand = QtWidgets.QLineEdit(self.commands)
+        self.afterStopCommand.setObjectName("afterStopCommand")
+        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.afterStopCommand)
+        self.macrosHelp1 = QtWidgets.QLabel(self.commands)
+        self.macrosHelp1.setObjectName("macrosHelp1")
+        self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.SpanningRole, self.macrosHelp1)
+        self.macrosHelp2 = QtWidgets.QLabel(self.commands)
+        self.macrosHelp2.setObjectName("macrosHelp2")
+        self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.SpanningRole, self.macrosHelp2)
+        self.macrosHelp3 = QtWidgets.QLabel(self.commands)
+        self.macrosHelp3.setObjectName("macrosHelp3")
+        self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.SpanningRole, self.macrosHelp3)
+        self.verticalLayout.addWidget(self.commands)
 
         self.retranslateUi(Settings)
         QtCore.QMetaObject.connectSlotsByName(Settings)
@@ -103,3 +129,9 @@ class Ui_Settings(object):
         self.autoStopTomato.setText(_translate("Settings", "Auto stop tomato after break"))
         self.autoStopBreak.setText(_translate("Settings", "Auto stop break after tomato"))
         self.switchToTomatoOnAbort.setText(_translate("Settings", "Skip break if you press stop button"))
+        self.commands.setTitle(_translate("Settings", "Custom commands to execute after the timer is:"))
+        self.afterStartLabel.setText(_translate("Settings", "start"))
+        self.afterStopLabel.setText(_translate("Settings", "stop"))
+        self.macrosHelp1.setText(_translate("Settings", "You can use macros to pass information to the command:"))
+        self.macrosHelp2.setText(_translate("Settings", "{tomatoes} - number of completed tomatoes."))
+        self.macrosHelp3.setText(_translate("Settings", "{state} - current state (\"tomato\", \"break\", \"long_break\")"))
