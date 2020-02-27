@@ -31,8 +31,10 @@ class QRoundPushbutton(QPushButton):
         self.applyStyleSheet()
 
     def setImage(self, image: str):
-        self.image = os.path.join(MEDIA_DIR, image)
-        self.applyStyleSheet()
+        path = os.path.join(MEDIA_DIR, image)
+        if path != self.image:
+            self.image = path
+            self.applyStyleSheet()
 
     def applyStyleSheet(self):
         self.setStyleSheet(self.stylesheet.format(color=self.color, image=self.image))
@@ -91,7 +93,8 @@ class QRoundProgressBar(QRoundProgressBar_):
         return firstInnerRect, secondInnerRect, innerRadius
 
     def drawTwoTexts(
-        self, p: QPainter, firstRect: QRectF, secondRect: QRectF, innerRadius: float, value: float
+            self, p: QPainter, firstRect: QRectF, secondRect: QRectF, innerRadius: float,
+            value: float
     ):
         if not self.m_format:
             return

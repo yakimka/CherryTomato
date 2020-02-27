@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'about_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.1
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -49,7 +49,7 @@ class Ui_About(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.labelCopyright.sizePolicy().hasHeightForWidth())
         self.labelCopyright.setSizePolicy(sizePolicy)
-        self.labelCopyright.setText("Copyright © 2019 yakimka")
+        self.labelCopyright.setText("Copyright © 2019-2020 yakimka")
         self.labelCopyright.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.labelCopyright.setObjectName("labelCopyright")
         self.verticalLayout.addWidget(self.labelCopyright)

@@ -17,7 +17,7 @@ def check_is_ticked_when_tomato(tomato):
 
 
 def test_tick_tomatos_count(tomato, qtbot):
-    tomato.seconds = 0.2
+    tomato._seconds = 0.2
     with qtbot.waitSignal(tomato.finished, timeout=1000):
         tomato.start()
 
@@ -25,7 +25,7 @@ def test_tick_tomatos_count(tomato, qtbot):
 
 
 def test_tick_tomatos_count_from_break(tomato_on_break, qtbot):
-    tomato_on_break.seconds = 0.2
+    tomato_on_break._seconds = 0.2
     with qtbot.waitSignal(tomato_on_break.finished, timeout=1000):
         tomato_on_break.start()
 
@@ -39,12 +39,12 @@ def test_tick_tomatos_count_from_break(tomato_on_break, qtbot):
     (False, False, False),
 ])
 def test_tick_auto_stop(tomato, qtbot, mock_stop, is_tomato, flag, auto_stop):
-    tomato.settings.AUTO_STOP_TOMATO_DEFAULT = flag
-    tomato.settings.AUTO_STOP_BREAK_DEFAULT = flag
+    tomato.settings.autoStopTomato = flag
+    tomato.settings.autoStopBreak = flag
     if not is_tomato:
         tomato.changeState()
 
-    tomato.seconds = 0.2
+    tomato._seconds = 0.2
     with qtbot.waitSignal(tomato.finished, timeout=1000):
         tomato.start()
 

@@ -1,12 +1,14 @@
 all: init clean lint test
 
 clean: clean-build clean-pyc  ## Clean build files and pyc files
-	rm -fr htmlcov/
 
 clean-build:  ## Clean build files
-	rm -fr build/
-	rm -fr dist/
-	rm -fr *.egg-info
+	rm -rf build/
+	rm -rf dist/
+	rm -rf *.egg-info
+	rm -rf contrib/pkg
+	rm -rf contrib/src
+	rm -rf contrib/*.tar.xz
 
 clean-pyc:  ## Clean pyc files
 	find . -name '*.pyc' -exec rm -f {} +

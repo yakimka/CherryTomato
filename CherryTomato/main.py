@@ -7,6 +7,9 @@ from PyQt5.QtCore import QCoreApplication
 
 from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME
 from CherryTomato.main_window import CherryTomatoMainWindow
+from CherryTomato.settings import CherryTomatoSettings
+from CherryTomato.timer_proxy import TomatoTimerProxy
+from CherryTomato.tomato_timer import TomatoTimer
 
 
 def main():
@@ -15,7 +18,10 @@ def main():
 
     app = Qt.QApplication(sys.argv)
 
-    watch = CherryTomatoMainWindow()
+    settings = CherryTomatoSettings.createQT()
+    tomatoTimer = TomatoTimer(settings)
+    timerProxy = TomatoTimerProxy(tomatoTimer)
+    watch = CherryTomatoMainWindow(timerProxy, settings)
     watch.show()
 
     app.exec_()

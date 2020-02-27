@@ -16,14 +16,11 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.setupUi(self)
 
         self.setWindowIcon(QIcon(APP_ICON))
-        self.settings = CherryTomatoSettings()
+        self.settings = CherryTomatoSettings.createQT()
 
-        state_tomato = self.settings.stateTomato
-        self.stateTomato.setValue(int(state_tomato.time / 60))
-        state_break = self.settings.stateBreak
-        self.stateBreak.setValue(int(state_break.time / 60))
-        state_long_break = self.settings.stateLongBreak
-        self.stateLongBreak.setValue(int(state_long_break.time / 60))
+        self.stateTomato.setValue(int(self.settings.stateTomato / 60))
+        self.stateBreak.setValue(int(self.settings.stateBreak / 60))
+        self.stateLongBreak.setValue(int(self.settings.stateLongBreak / 60))
         self.repeat.setValue(self.settings.repeat)
 
         self.notification.setChecked(self.settings.notification)

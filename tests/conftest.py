@@ -1,44 +1,54 @@
 from unittest.mock import MagicMock
 
 import pytest
+from PyQt5.QtCore import QSize, QPoint
 
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.tomato_timer import TomatoTimer
 
 
-class MockQSettings:
-    def value(self, key, default, type=None):
-        return default
+@pytest.fixture
+def default_settings():
+    return {
+        'stateTomato': 100,
+        'stateBreak': 25,
+        'stateLongBreak': 50,
+        'repeat': 4,
+        'autoStopTomato': False,
+        'autoStopBreak': False,
+        'switchToTomatoOnAbort': True,
 
-    setValue = MagicMock()
-    remove = MagicMock()
+        'size': QSize(400, 520),
+        'position': QPoint(50, 50),
+        'notification': True,
+        'interrupt': True,
+    }
 
 
 @pytest.fixture
-def mock_qsettings(monkeypatch, mocker):
-    monkeypatch.setattr(CherryTomatoSettings, 'TOMATO_DEFAULT', 100)
-    monkeypatch.setattr(CherryTomatoSettings, 'BREAK_DEFAULT', 25)
-    monkeypatch.setattr(CherryTomatoSettings, 'LONG_BREAK_DEFAULT', 50)
-    monkeypatch.setattr(CherryTomatoSettings, 'REPEAT_DEFAULT', 4)
-    monkeypatch.setattr(CherryTomatoSettings, 'AUTO_STOP_TOMATO_DEFAULT', False)
-    monkeypatch.setattr(CherryTomatoSettings, 'AUTO_STOP_BREAK_DEFAULT', False)
-    monkeypatch.setattr(CherryTomatoSettings, 'SWITCH_TO_TOMATO_ON_ABORT_DEFAULT', True)
+def mock_settings_backend(default_settings):
+    class MockQSettings:
+        settings = default_settings
 
-    return mocker.patch('CherryTomato.settings.QSettings', MockQSettings)
+        def value(self, key, default, type=None):
+            return self.settings.get(key)
 
+        def setValue(self, key, value):
+            self.settings[key] = value
 
-@pytest.fixture
-def settings(mock_qsettings):
-    return CherryTomatoSettings()
+        remove = MagicMock()
+
+    return MockQSettings()
 
 
 @pytest.fixture
-def tomato(settings, monkeypatch, mocker):
-    monkeypatch.setattr(TomatoTimer, 'TICK_TIME', 64)
-    tomato = TomatoTimer()
-    tomato.settings = settings
+def settings(mock_settings_backend):
+    return CherryTomatoSettings(mock_settings_backend)
 
-    return tomato
+
+@pytest.fixture
+def tomato(settings):
+    return TomatoTimer(settings)
 
 
 @pytest.fixture
