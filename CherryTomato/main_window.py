@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from warnings import warn
 
 from PyQt5 import Qt, QtCore
@@ -7,11 +8,11 @@ from PyQt5.QtMultimedia import QSound
 
 from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
 from CherryTomato.main_ui import Ui_MainWindow
-from CherryTomato.tomato_timer import TomatoTimer
+from CherryTomato.timer_proxy import AbstractTimerProxy
 
 
 class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
-    def __init__(self, settings, parent=None):
+    def __init__(self, timerProxy: AbstractTimerProxy, settings, parent=None):
         super().__init__(parent=parent)
         self.settings = settings
 
@@ -19,10 +20,11 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.setWindowIcon(QIcon(APP_ICON))
         self.setWindowSizeAndPosition()
 
-        self.tomatoTimer = TomatoTimer(self.settings)
-        self.button.clicked.connect(self.doStart)
-        self.tomatoTimer.stateChanged.connect(self.display)
-        self.tomatoTimer.finished.connect(self.setFocusOnWindowAndPlayNotification)
+        self.timerProxy = timerProxy
+
+        self.button.clicked.connect(self.timerProxy.onAction)
+        self.timerProxy.stateChanged.connect(self.display)
+        self.timerProxy.finished.connect(self.setFocusOnWindowAndPlayNotification)
 
         self.display()
 
@@ -30,13 +32,10 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(self.showAboutWindow)
         self.settingsWindow = settings_window.Settings()
         self.actionSettings.triggered.connect(self.showSettingsWindow)
-        self.settingsWindow.closing.connect(self.update)
+        self.settingsWindow.closing.connect(self.timerProxy.onSettingsChange)
 
         self.actionReset.setShortcut(QKeySequence('Ctrl+R'))
-        self.actionReset.triggered.connect(self.tomatoTimer.reset)
-
-    def update(self):
-        self.tomatoTimer.onSettingsChange()
+        self.actionReset.triggered.connect(self.timerProxy.reset)
 
     def setWindowSizeAndPosition(self):
         # Initial window size/pos last saved. Use default values for first time
@@ -53,67 +52,48 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         else:
             warn(UserWarning("Can't restore window settings"))
 
+    def closeEvent(self, e):
+        self.saveWindowSizeAndPosition()
+        e.accept()
+
+    def saveWindowSizeAndPosition(self):
+        self.settings.size = self.size()
+        self.settings.position = self.pos()
+
     def showAboutWindow(self):
-        centerX, centerY = self.getCenterPoint()
-        x = int(centerX - self.aboutWindow.width() / 2)
-        y = int(centerY - self.aboutWindow.height() / 2)
+        x, y = self.getWindowCenterPoint(self.aboutWindow)
         self.aboutWindow.move(x, y)
         self.aboutWindow.show()
 
     def showSettingsWindow(self):
-        centerX, centerY = self.getCenterPoint()
-        x = int(centerX - self.settingsWindow.width() / 2)
-        y = int(centerY - self.settingsWindow.height() / 2)
+        x, y = self.getWindowCenterPoint(self.settingsWindow)
         self.settingsWindow.move(x, y)
         self.settingsWindow.show()
 
-    def getCenterPoint(self):
+    def getWindowCenterPoint(self, window):
         x = int(self.x() + self.width() / 2)
         y = int(self.y() + self.height() / 2)
 
-        return x, y
+        centerX = int(x - window.width() / 2)
+        centerY = int(y - window.height() / 2)
 
-    def closeEvent(self, e):
-        # Write window size and position to config file
-        self.settings.size = self.size()
-        self.settings.position = self.pos()
-
-        e.accept()
+        return centerX, centerY
 
     @Qt.pyqtSlot(name='display')
     def display(self):
-        TOMATO_SIGN = '🍅'
-        minutes, seconds = int(self.tomatoTimer.seconds // 60), int(self.tomatoTimer.seconds % 60)
-        self.progress.setFormat(f'{minutes:02d}:{seconds:02d}')
-        self.progress.setSecondFormat(f'{TOMATO_SIGN}x{self.tomatoTimer.tomatoes}')
-        self.progress.setValue(self.tomatoTimer.progress)
+        self.progress.setFormat(self.timerProxy.getUpperText())
+        self.progress.setSecondFormat(self.timerProxy.getBottomText())
+        self.progress.setValue(self.timerProxy.getProgress())
         self.changeButtonState()
-
-        if self.tomatoTimer.isTomato():
-            self.setRed()
-        else:
-            self.setGreen()
-
-    @Qt.pyqtSlot(name='doStart')
-    def doStart(self):
-        # TODO trigger through proxy
-        if not self.tomatoTimer.running:
-            self.tomatoTimer.start()
-        else:
-            self.tomatoTimer.abort()
+        self.setColor(*self.timerProxy.getColorPalette())
 
     def changeButtonState(self):
-        if not self.tomatoTimer.running:
+        if not self.timerProxy.isRunning():
             self.button.setImage('play.png')
         else:
             self.button.setImage('stop.png')
 
-    def setRed(self):
-        # https://coolors.co/eff0f1-d11f2a-8da1b9-95adb6-fad0cf
-        lightRed = (249, 192, 191)
-        red = (255, 37, 51)
-        self.setColor(lightRed, red)
-
+    @lru_cache(maxsize=1)
     def setColor(self, base: tuple, highlight: tuple):
         base_brush = QBrush(QColor(*base))
         base_brush.setStyle(QtCore.Qt.SolidPattern)
@@ -122,22 +102,13 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
         palette = QPalette()
         palette.setBrush(QPalette.Active, QPalette.Base, base_brush)
-        palette.setBrush(QPalette.Active, QPalette.Highlight, highlight_brush)
-
         palette.setBrush(QPalette.Inactive, QPalette.Base, base_brush)
+        palette.setBrush(QPalette.Active, QPalette.Highlight, highlight_brush)
         palette.setBrush(QPalette.Inactive, QPalette.Highlight, highlight_brush)
-
         palette.setBrush(QPalette.Text, highlight_brush)
 
         self.progress.setPalette(palette)
-
         self.button.setColor(highlight)
-
-    def setGreen(self):
-        # https://coolors.co/b5ffe1-3cbb6f-b0ecc1-4e878c-00241b
-        lightGreen = (176, 236, 193)
-        green = (60, 187, 111)
-        self.setColor(lightGreen, green)
 
     @Qt.pyqtSlot(name='setFocusOnWindowAndPlayNotification')
     def setFocusOnWindowAndPlayNotification(self):
