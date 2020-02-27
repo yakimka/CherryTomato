@@ -37,6 +37,8 @@ class CherryTomatoSettings:
 
         Option('afterStartCommand', '', str),
         Option('afterStopCommand', '', str),
+        Option('onTomatoCommand', '', str),
+        Option('onBreakCommand', '', str),
     ]
 
     def __init__(self, settingsBackend):

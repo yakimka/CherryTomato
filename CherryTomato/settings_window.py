@@ -31,6 +31,8 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
 
         self.afterStartCommand.setText(self.settings.afterStartCommand)
         self.afterStopCommand.setText(self.settings.afterStopCommand)
+        self.onTomatoCommand.setText(self.settings.onTomatoCommand)
+        self.onBreakCommand.setText(self.settings.onBreakCommand)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Qt.Key_Escape:
@@ -57,3 +59,5 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
 
         self.settings.afterStartCommand = self.afterStartCommand.text()
         self.settings.afterStopCommand = self.afterStopCommand.text()
+        self.settings.onTomatoCommand = self.onTomatoCommand.text()
+        self.settings.onBreakCommand = self.onBreakCommand.text()

@@ -26,6 +26,7 @@ def main():
     cmdExec = CommandExecutor(settings)
     timerProxy.onStart.connect(cmdExec.onStart)
     timerProxy.onStop.connect(cmdExec.onStop)
+    timerProxy.onStateChange.connect(cmdExec.onStateChange)
 
     watch = CherryTomatoMainWindow(timerProxy, settings)
     watch.show()
