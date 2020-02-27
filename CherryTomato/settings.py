@@ -37,7 +37,7 @@ class CherryTomatoSettings:
     ]
 
     def __init__(self, settingsBackend):
-        self.settings = settingsBackend
+        self.settingsBackend = settingsBackend
 
     @classmethod
     def createQT(cls):
@@ -47,7 +47,7 @@ class CherryTomatoSettings:
     def __getattr__(self, item):
         opt = self._findOption(item)
         if opt:
-            return self.settings.value(opt.name, opt.default, **opt.getTypeKwarg())
+            return self.settingsBackend.value(opt.name, opt.default, **opt.getTypeKwarg())
         raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}")
 
     def _findOption(self, name):
@@ -56,13 +56,13 @@ class CherryTomatoSettings:
     def __setattr__(self, key, value):
         opt = self._findOption(key)
         if opt:
-            self.settings.setValue(opt.name, value)
+            self.settingsBackend.setValue(opt.name, value)
         else:
             super().__setattr__(key, value)
 
     def __delattr__(self, item):
         opt = self._findOption(item)
         if opt and opt.deleter:
-            self.settings.remove(opt.name)
+            self.settingsBackend.remove(opt.name)
         else:
             super().__delattr__(item)

@@ -13,7 +13,9 @@ class State(UserString):
 
 
 class TomatoTimer(QObject):
-    stateChanged = pyqtSignal()
+    onStart = pyqtSignal()
+    onStop = pyqtSignal()
+    onChange = pyqtSignal()
     finished = pyqtSignal()
 
     def __init__(self, settings):
@@ -69,7 +71,7 @@ class TomatoTimer(QObject):
         return self.state == STATE_TOMATO
 
     def notifyAboutAnyChange(self):
-        self.stateChanged.emit()
+        self.onChange.emit()
 
     @property
     def running(self):
@@ -113,12 +115,20 @@ class TomatoTimer(QObject):
 
     def stop(self):
         self.timer.stop()
+        self.notifyOnStop()
+
+    def notifyOnStop(self):
+        self.onStop.emit()
 
     def notifyTimerIsOver(self):
         self.finished.emit()
 
     def start(self):
         self.timer.start()
+        self.notifyOnStart()
+
+    def notifyOnStart(self):
+        self.onStart.emit()
 
     def abort(self):
         self.stop()

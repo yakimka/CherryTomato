@@ -2,7 +2,7 @@ import pytest
 
 
 def test_tick_once(tomato, qtbot):
-    with qtbot.waitSignal(tomato.stateChanged, timeout=64):
+    with qtbot.waitSignal(tomato.onChange, timeout=64):
         tomato.start()
 
     check_is_ticked_when_tomato(tomato)
@@ -52,7 +52,7 @@ def test_tick_auto_stop(tomato, qtbot, mock_stop, is_tomato, flag, auto_stop):
 
 
 def test_notify_about_any_change(tomato, qtbot):
-    with qtbot.waitSignal(tomato.stateChanged, timeout=64):
+    with qtbot.waitSignal(tomato.onChange, timeout=64):
         tomato.notifyAboutAnyChange()
 
 
@@ -62,5 +62,5 @@ def test_notify_timer_is_over(tomato, qtbot):
 
 
 def test_notify_any_change_in_abort(tomato, qtbot):
-    with qtbot.waitSignal(tomato.stateChanged, timeout=64):
+    with qtbot.waitSignal(tomato.onChange, timeout=64):
         tomato.start()

@@ -23,7 +23,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.timerProxy = timerProxy
 
         self.button.clicked.connect(self.timerProxy.onAction)
-        self.timerProxy.stateChanged.connect(self.display)
+        self.timerProxy.onChange.connect(self.display)
         self.timerProxy.finished.connect(self.setFocusOnWindowAndPlayNotification)
 
         self.display()
