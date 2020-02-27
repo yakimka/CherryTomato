@@ -7,6 +7,7 @@ from PyQt5.QtCore import QCoreApplication
 
 from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME
 from CherryTomato.main_window import CherryTomatoMainWindow
+from CherryTomato.settings import CherryTomatoSettings
 
 
 def main():
@@ -15,7 +16,8 @@ def main():
 
     app = Qt.QApplication(sys.argv)
 
-    watch = CherryTomatoMainWindow()
+    settings = CherryTomatoSettings.createQT()
+    watch = CherryTomatoMainWindow(settings)
     watch.show()
 
     app.exec_()

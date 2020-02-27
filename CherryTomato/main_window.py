@@ -1,4 +1,5 @@
 import os
+from warnings import warn
 
 from PyQt5 import Qt, QtCore
 from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon, QKeySequence
@@ -6,24 +7,20 @@ from PyQt5.QtMultimedia import QSound
 
 from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
 from CherryTomato.main_ui import Ui_MainWindow
-from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.tomato_timer import TomatoTimer
 
 
 class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, settings, parent=None):
+        super().__init__(parent=parent)
+        self.settings = settings
 
         self.setupUi(self)
-
         self.setWindowIcon(QIcon(APP_ICON))
-
-        self.settings = CherryTomatoSettings()
         self.setWindowSizeAndPosition()
 
-        self.tomatoTimer = TomatoTimer()
-
-        self.button.clicked.connect(self.do_start)
+        self.tomatoTimer = TomatoTimer(self.settings)
+        self.button.clicked.connect(self.doStart)
         self.tomatoTimer.stateChanged.connect(self.display)
         self.tomatoTimer.finished.connect(self.setFocusOnWindowAndPlayNotification)
 
@@ -39,11 +36,11 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.actionReset.triggered.connect(self.tomatoTimer.reset)
 
     def update(self):
-        self.tomatoTimer.updateState()
+        self.tomatoTimer.onSettingsChange()
 
     def setWindowSizeAndPosition(self):
         # Initial window size/pos last saved. Use default values for first time
-        while True:
+        for _ in range(3):
             try:
                 self.resize(self.settings.size)
                 self.move(self.settings.position)
@@ -53,6 +50,8 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
                 continue
             else:
                 break
+        else:
+            warn(UserWarning("Can't restore window settings"))
 
     def showAboutWindow(self):
         centerX, centerY = self.getCenterPoint()
@@ -81,7 +80,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
         e.accept()
 
-    @Qt.pyqtSlot()
+    @Qt.pyqtSlot(name='display')
     def display(self):
         TOMATO_SIGN = '🍅'
         minutes, seconds = int(self.tomatoTimer.seconds // 60), int(self.tomatoTimer.seconds % 60)
@@ -95,8 +94,8 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         else:
             self.setGreen()
 
-    @Qt.pyqtSlot()
-    def do_start(self):
+    @Qt.pyqtSlot(name='doStart')
+    def doStart(self):
         # TODO trigger through proxy
         if not self.tomatoTimer.running:
             self.tomatoTimer.start()
@@ -140,7 +139,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         green = (60, 187, 111)
         self.setColor(lightGreen, green)
 
-    @Qt.pyqtSlot()
+    @Qt.pyqtSlot(name='setFocusOnWindowAndPlayNotification')
     def setFocusOnWindowAndPlayNotification(self):
         if self.settings.interrupt:
             self.raise_()

@@ -2,22 +2,21 @@ from itertools import cycle
 
 import pytest
 
-from CherryTomato.settings import State
+from CherryTomato.tomato_timer import State
 
-STATE_TOMATO = State('tomato', 100)
 STATE_BREAK = State('break', 25)
 STATE_LONG_BREAK = State('long_break', 50)
 
 
 def test_instance(tomato):
-    assert tomato.state == 'tomato'
+    assert tomato.state == 'stateTomato'
     assert tomato.seconds == 100
     assert tomato.running is False
 
 
 def test_init(tomato):
     assert tomato.running is False
-    assert tomato.state == 'tomato'
+    assert tomato.state == 'stateTomato'
     assert tomato.seconds == 100
 
 
@@ -35,7 +34,7 @@ def test_running(mock_qt_timer, tomato):
     (62, 62),
     (-5, 0),
 ])
-def test_seconds(tomato, seconds, expected):
+def test_seconds_setter(tomato, seconds, expected):
     tomato.seconds = seconds
     assert tomato.seconds == expected
 
@@ -48,7 +47,7 @@ def test_seconds(tomato, seconds, expected):
     (0, 100),
 ])
 def test_progress(tomato, seconds, progress):
-    tomato.seconds = seconds
+    tomato._seconds = seconds
     assert tomato.progress == progress
 
 
@@ -63,12 +62,12 @@ def test_stop(mock_qt_timer, tomato):
 
 
 @pytest.fixture
-def mock_change_reset(mocker):
+def mock_reset_time(mocker):
     return mocker.patch('CherryTomato.tomato_timer.TomatoTimer.resetTime')
 
 
 @pytest.fixture
-def mock_for_abort(mock_stop, mock_change_reset):
+def mock_for_abort(mock_stop, mock_reset_time):
     pass
 
 
@@ -84,12 +83,17 @@ def test_abort(mock_for_abort, tomato):
     (True, True),
     (False, False)
 ])
-def test_abort_with_switch_to_tomato_flag(mock_for_abort, tomato_on_break, flag_value, changed):
-    tomato_on_break.settings.SWITCH_TO_TOMATO_ON_ABORT_DEFAULT = flag_value
+def test_abort_with_switch_to_tomato_flag(
+        mock_for_abort,
+        tomato_on_break,
+        flag_value,
+        changed
+):
+    tomato_on_break.settings.switchToTomatoOnAbort = flag_value
 
     tomato_on_break.abort()
 
-    assert ('break' != tomato_on_break.state) is changed
+    assert ('stateBreak' != tomato_on_break.state) is changed
 
 
 def test_create_timer(mock_qt_timer, tomato):
@@ -106,38 +110,39 @@ def test_is_tomato(tomato, state, expected):
     assert tomato.isTomato() is expected
 
 
-def test_change_state(tomato, settings):
-    for i, state in enumerate(cycle([settings.stateTomato, settings.stateBreak])):
+def test_change_state(tomato):
+    for i, params in enumerate(cycle([('stateTomato', 100), ('stateBreak', 25)])):
+        state, time = params
+
         assert tomato.state == state
-        assert tomato.seconds == state.time
+        assert tomato.seconds == time
         tomato.changeState()
         if i == 10:
             break
 
 
 @pytest.mark.parametrize('tomatoes,const_value,expected', [
-    (0, 4, STATE_BREAK),
-    (3, 4, STATE_BREAK),
-    (4, 4, STATE_LONG_BREAK),
-    (5, 4, STATE_BREAK),
-    (12, 1, STATE_LONG_BREAK),
-    (1, 10, STATE_BREAK),
-    (20, 10, STATE_LONG_BREAK),
-    (100, 10, STATE_LONG_BREAK),
+    (0, 4, 'stateBreak'),
+    (3, 4, 'stateBreak'),
+    (5, 4, 'stateBreak'),
+    (1, 10, 'stateBreak'),
+    (4, 4, 'stateLongBreak'),
+    (12, 1, 'stateLongBreak'),
+    (20, 10, 'stateLongBreak'),
+    (100, 10, 'stateLongBreak'),
 
 ])
 def test_change_state_to_long_break(tomato, tomatoes, const_value, expected):
-    tomato.settings.REPEAT_DEFAULT = const_value
+    tomato.settings.repeat = const_value
     tomato.tomatoes = tomatoes
 
     tomato.changeState()
 
     assert tomato.state == expected
-    assert tomato.seconds == expected.time
 
 
 def test_reset_time(tomato):
-    tomato.seconds = 1
+    tomato.applyTick()
 
     tomato.resetTime()
 
