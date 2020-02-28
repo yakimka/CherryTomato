@@ -1,6 +1,5 @@
 import os
 from functools import lru_cache
-from warnings import warn
 
 from PyQt5 import Qt, QtCore
 from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon, QKeySequence
@@ -9,11 +8,13 @@ from PyQt5.QtMultimedia import QSound
 from CherryTomato import about_window, APP_ICON, MEDIA_DIR, settings_window
 from CherryTomato.main_ui import Ui_MainWindow
 from CherryTomato.timer_proxy import AbstractTimerProxy
+from CherryTomato.utils import classLogger
 
 
 class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
     def __init__(self, timerProxy: AbstractTimerProxy, settings, parent=None):
         super().__init__(parent=parent)
+        self.logger = classLogger(__name__, self.__class__.__name__)
         self.settings = settings
 
         self.setupUi(self)
@@ -39,18 +40,21 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     def setWindowSizeAndPosition(self):
         # Initial window size/pos last saved. Use default values for first time
-        for _ in range(3):
+        for _ in range(2):
             try:
                 self.resize(self.settings.size)
                 self.move(self.settings.position)
             except TypeError:
+                msg = f"Can't read window size and position settings. Restore to defaults"
+                self.logger.warning(msg)
                 del self.settings.size
                 del self.settings.position
                 continue
             else:
                 break
         else:
-            warn(UserWarning("Can't restore window settings"))
+            msg = "Can't restore window settings"
+            self.logger.error(msg)
 
     def closeEvent(self, e):
         self.saveWindowSizeAndPosition()

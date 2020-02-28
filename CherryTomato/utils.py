@@ -1,11 +1,38 @@
+import logging
 import shlex
 import subprocess
 
 from CherryTomato.settings import STATE_TOMATO, STATE_BREAK, STATE_LONG_BREAK
 
 
+class CompactFormatter(logging.Formatter):
+    """Leave class name only
+    """
+
+    def format(self, record):
+        record.name = record.name.rpartition('.')[-1]
+        return super().format(record)
+
+
+def makeLogger(name, *, handler, level):
+    """Create the root logger
+    """
+    logger = logging.getLogger(name)
+    logger.addHandler(handler)
+    logger.setLevel(level)
+    logger.propagate = False
+    return logger
+
+
+def classLogger(path, classname):
+    """Return logger for a class
+    """
+    return logging.getLogger(path).getChild(classname)
+
+
 class CommandExecutor:
     def __init__(self, settings):
+        self.logger = classLogger(__name__, self.__class__.__name__)
         self.settings = settings
 
     def onStart(self, status):
@@ -22,13 +49,15 @@ class CommandExecutor:
 
     def _execute(self, command, status=None):
         if command:
-            command = self._applyMacros(command, status)
+            cmd_with_macros = self._applyMacros(command, status)
             try:
                 subprocess.Popen(
-                    shlex.split(command), stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+                    shlex.split(cmd_with_macros),
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT
                 )
-            except Exception as e:
-                print(e)
+            except Exception:
+                self.logger.exception(f'Error while executing command "{command}"', exc_info=True)
 
     @classmethod
     def _applyMacros(cls, cmd, status=None):
