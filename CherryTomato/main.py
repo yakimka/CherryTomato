@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import logging
 import sys
 
 from PyQt5 import Qt
@@ -10,7 +10,12 @@ from CherryTomato.main_window import CherryTomatoMainWindow
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.timer_proxy import TomatoTimerProxy
 from CherryTomato.tomato_timer import TomatoTimer
-from CherryTomato.utils import CommandExecutor
+from CherryTomato.utils import CommandExecutor, CompactFormatter, makeLogger
+
+logFmt = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(CompactFormatter(logFmt, "%Y-%m-%d %H:%M:%S"))
+logger = makeLogger('CherryTomato', handler=handler, level='INFO')
 
 
 def main():
