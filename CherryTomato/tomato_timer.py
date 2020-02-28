@@ -1,4 +1,4 @@
-from collections import UserString
+from collections import UserString, namedtuple
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -12,9 +12,15 @@ class State(UserString):
         super().__init__(seq)
 
 
+TimerStatus = namedtuple('TimerStatus', 'tomatoes state')
+
+
 class TomatoTimer(QObject):
-    stateChanged = pyqtSignal()
-    finished = pyqtSignal()
+    onStart = pyqtSignal(TimerStatus)
+    onStop = pyqtSignal(TimerStatus)
+    onStateChange = pyqtSignal(TimerStatus)
+    onChange = pyqtSignal(TimerStatus)
+    finished = pyqtSignal(TimerStatus)
 
     def __init__(self, settings):
         super().__init__()
@@ -23,6 +29,9 @@ class TomatoTimer(QObject):
         self.tickTime = 64  # ms
 
         self.reset()
+
+    def getStatus(self):
+        return TimerStatus(self.tomatoes, self.state)
 
     def reset(self):
         self.tomatoes = 0
@@ -46,6 +55,10 @@ class TomatoTimer(QObject):
 
         self.stateName = next(self._states)
         self.seconds = self.state.time
+        self.notifyOnStateChange()
+
+    def notifyOnStateChange(self):
+        self.onStateChange.emit(self.getStatus())
 
     @property
     def state(self):
@@ -69,7 +82,7 @@ class TomatoTimer(QObject):
         return self.state == STATE_TOMATO
 
     def notifyAboutAnyChange(self):
-        self.stateChanged.emit()
+        self.onChange.emit(self.getStatus())
 
     @property
     def running(self):
@@ -113,19 +126,26 @@ class TomatoTimer(QObject):
 
     def stop(self):
         self.timer.stop()
+        self.notifyOnStop()
+
+    def notifyOnStop(self):
+        self.onStop.emit(self.getStatus())
 
     def notifyTimerIsOver(self):
-        self.finished.emit()
+        self.finished.emit(self.getStatus())
 
     def start(self):
         self.timer.start()
+        self.notifyOnStart()
+
+    def notifyOnStart(self):
+        self.onStart.emit(self.getStatus())
 
     def abort(self):
-        self.stop()
         if not self.isTomato() and self.settings.switchToTomatoOnAbort:
             self.changeState()
-        else:
-            self.resetTime()
+        self.stop()
+        self.resetTime()
         self.notifyAboutAnyChange()
 
     def onSettingsChange(self):

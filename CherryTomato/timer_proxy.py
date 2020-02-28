@@ -6,7 +6,10 @@ ColorPalette = namedtuple('ColorPalette', 'base highlight')
 class AbstractTimerProxy:
     def __init__(self, timer):
         self.timer = timer
-        self.stateChanged = self.timer.stateChanged
+        self.onStart = self.timer.onStart
+        self.onStop = self.timer.onStop
+        self.onStateChange = self.timer.onStateChange
+        self.onChange = self.timer.onChange
         self.finished = self.timer.finished
 
     def isRunning(self) -> bool:

@@ -165,6 +165,76 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QGroupBox" name="commands">
+     <property name="title">
+      <string>Execute custom commands:</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="afterStartLabel">
+        <property name="text">
+         <string>On start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="afterStartCommand"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="afterStopLabel">
+        <property name="text">
+         <string>On stop</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="afterStopCommand"/>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QLabel" name="macrosHelp1">
+        <property name="text">
+         <string>You can use macros to pass information to the command:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="macrosHelp2">
+        <property name="text">
+         <string>{tomatoes} - number of completed tomatoes.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QLabel" name="macrosHelp3">
+        <property name="text">
+         <string>{state} - current state (&quot;tomato&quot;, &quot;break&quot;, &quot;long_break&quot;)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="onTomatoLabel">
+        <property name="text">
+         <string>On tomato</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="onBreakLabel">
+        <property name="text">
+         <string>On break</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="onTomatoCommand"/>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="onBreakCommand"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
