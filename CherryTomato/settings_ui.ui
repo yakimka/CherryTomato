@@ -201,7 +201,7 @@
       <item row="5" column="0" colspan="2">
        <widget class="QLabel" name="macrosHelp2">
         <property name="text">
-         <string>{tomatoes} - number of completed tomatoes.</string>
+         <string>{tomatoes} - number of completed tomatoes</string>
         </property>
        </widget>
       </item>

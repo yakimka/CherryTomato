@@ -145,7 +145,7 @@ class Ui_Settings(object):
         self.afterStartLabel.setText(_translate("Settings", "On start"))
         self.afterStopLabel.setText(_translate("Settings", "On stop"))
         self.macrosHelp1.setText(_translate("Settings", "You can use macros to pass information to the command:"))
-        self.macrosHelp2.setText(_translate("Settings", "{tomatoes} - number of completed tomatoes."))
+        self.macrosHelp2.setText(_translate("Settings", "{tomatoes} - number of completed tomatoes"))
         self.macrosHelp3.setText(_translate("Settings", "{state} - current state (\"tomato\", \"break\", \"long_break\")"))
         self.onTomatoLabel.setText(_translate("Settings", "On tomato"))
         self.onBreakLabel.setText(_translate("Settings", "On break"))
