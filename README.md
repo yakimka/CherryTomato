@@ -46,6 +46,8 @@ Commands executed with python `subprocess.Popen` without `shell=True` option. It
 
 But if you need pipes and other shell features you can write your own script, place it in filesystem and execute from CherryTomato.
 
+**NOTE:** Commands that you executed will not be closed automatically on the CherryTomato exit.
+ 
 Also, you can pass some info about timer to your custom commands with macros:
 
 * `{tomatoes}` - number of completed tomatoes
