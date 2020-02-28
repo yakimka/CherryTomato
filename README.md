@@ -1,3 +1,5 @@
+![build](https://github.com/yakimka/CherryTomato/workflows/build/badge.svg)
+
 # CherryTomato
 
 ![Screenshot](assets/screenshot.png)
