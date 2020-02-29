@@ -24,6 +24,7 @@
 
 * Arch Linux
 * KDE5
+* Xorg X server
 * FullHD Display
 * Python 3.7, 3.8
 

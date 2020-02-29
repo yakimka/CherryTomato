@@ -50,4 +50,14 @@ jobs:
         pip install tox
     - name: Test with tox
       run: |
-        tox -e ${{ matrix.tox-env }}-${{ matrix.qt-lib }} -- -ra --color=yes
+        tox -e ${{ matrix.tox-env }}-${{ matrix.qt-lib }} -- --cov --cov-report=xml --cov-report=term
+    - name: Upload coverage to Codecov (only for 3.8)
+      if: matrix.python-version == 3.8
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        yml: ./codecov.yml
+        fail_ci_if_error: true
