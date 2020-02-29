@@ -1,4 +1,5 @@
 ![build](https://github.com/yakimka/CherryTomato/workflows/build/badge.svg)
+[![codecov](https://codecov.io/gh/yakimka/CherryTomato/branch/master/graph/badge.svg)](https://codecov.io/gh/yakimka/CherryTomato)
 
 # CherryTomato
 
