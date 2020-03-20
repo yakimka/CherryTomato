@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.1
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.resize(419, 575)
+        Settings.resize(419, 624)
         Settings.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.verticalLayout = QtWidgets.QVBoxLayout(Settings)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -62,7 +62,7 @@ class Ui_Settings(object):
         self.notification.setAutoExclusive(False)
         self.notification.setTristate(False)
         self.notification.setObjectName("notification")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.notification)
+        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.notification)
         self.interrupt = QtWidgets.QCheckBox(self.checkboxes)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -72,20 +72,23 @@ class Ui_Settings(object):
         self.interrupt.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.interrupt.setAutoFillBackground(False)
         self.interrupt.setObjectName("interrupt")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.interrupt)
+        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.interrupt)
         self.autoStopTomato = QtWidgets.QCheckBox(self.checkboxes)
         self.autoStopTomato.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.autoStopTomato.setObjectName("autoStopTomato")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.autoStopTomato)
+        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.autoStopTomato)
         self.autoStopBreak = QtWidgets.QCheckBox(self.checkboxes)
         self.autoStopBreak.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.autoStopBreak.setObjectName("autoStopBreak")
-        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.autoStopBreak)
+        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.autoStopBreak)
         self.switchToTomatoOnAbort = QtWidgets.QCheckBox(self.checkboxes)
         self.switchToTomatoOnAbort.setMinimumSize(QtCore.QSize(0, 0))
         self.switchToTomatoOnAbort.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.switchToTomatoOnAbort.setObjectName("switchToTomatoOnAbort")
-        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.switchToTomatoOnAbort)
+        self.formLayout_2.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.switchToTomatoOnAbort)
+        self.useSystemFont = QtWidgets.QCheckBox(self.checkboxes)
+        self.useSystemFont.setObjectName("useSystemFont")
+        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.useSystemFont)
         self.verticalLayout.addWidget(self.checkboxes)
         self.commands = QtWidgets.QGroupBox(Settings)
         self.commands.setObjectName("commands")
@@ -141,6 +144,7 @@ class Ui_Settings(object):
         self.autoStopTomato.setText(_translate("Settings", "Auto stop tomato after break"))
         self.autoStopBreak.setText(_translate("Settings", "Auto stop break after tomato"))
         self.switchToTomatoOnAbort.setText(_translate("Settings", "Skip break if you press stop button"))
+        self.useSystemFont.setText(_translate("Settings", "Use system font"))
         self.commands.setTitle(_translate("Settings", "Execute custom commands:"))
         self.afterStartLabel.setText(_translate("Settings", "On start"))
         self.afterStopLabel.setText(_translate("Settings", "On stop"))

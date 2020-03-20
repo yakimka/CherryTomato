@@ -23,6 +23,7 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.stateLongBreak.setValue(int(self.settings.stateLongBreak / 60))
         self.repeat.setValue(self.settings.repeat)
 
+        self.useSystemFont.setChecked(self.settings.useSystemFont)
         self.notification.setChecked(self.settings.notification)
         self.interrupt.setChecked(self.settings.interrupt)
         self.autoStopTomato.setChecked(self.settings.autoStopTomato)
@@ -51,6 +52,7 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.settings.stateLongBreak = self.stateLongBreak.value() * 60
         self.settings.repeat = self.repeat.value()
 
+        self.settings.useSystemFont = self.useSystemFont.isChecked()
         self.settings.notification = self.notification.isChecked()
         self.settings.interrupt = self.interrupt.isChecked()
         self.settings.autoStopTomato = self.autoStopTomato.isChecked()

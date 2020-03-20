@@ -10,7 +10,7 @@ from CherryTomato.main_window import CherryTomatoMainWindow
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.timer_proxy import TomatoTimerProxy
 from CherryTomato.tomato_timer import TomatoTimer
-from CherryTomato.utils import CommandExecutor, CompactFormatter, makeLogger
+from CherryTomato.utils import CommandExecutor, CompactFormatter, makeLogger, addCustomFont
 
 logFmt = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
 handler = logging.StreamHandler(sys.stdout)
@@ -23,6 +23,9 @@ def main():
     QCoreApplication.setApplicationName(APPLICATION_NAME)
 
     app = Qt.QApplication(sys.argv)
+
+    addCustomFont()
+
     settings = CherryTomatoSettings.createQT()
 
     tomatoTimer = TomatoTimer(settings)
