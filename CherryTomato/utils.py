@@ -1,7 +1,11 @@
 import logging
+import os
 import shlex
 import subprocess
 
+from PyQt5 import QtGui
+
+from CherryTomato import BASE_DIR
 from CherryTomato.settings import STATE_TOMATO, STATE_BREAK, STATE_LONG_BREAK
 
 
@@ -80,3 +84,8 @@ class CommandExecutor:
         }
 
         return states[state]
+
+
+def addCustomFont():
+    fontDB = QtGui.QFontDatabase()
+    fontDB.addApplicationFont(os.path.join(BASE_DIR, 'media', 'NotoSans-Regular.ttf'))

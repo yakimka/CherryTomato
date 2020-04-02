@@ -28,6 +28,8 @@ class CherryTomatoSettings:
 
         Option('size', QSize(400, 520), deleter=True),
         Option('position', QPoint(50, 50), deleter=True),
+
+        Option('useSystemFont', False, bool),
         Option('notification', True, bool),
         Option('interrupt', True, bool),
         Option('repeat', 4, int),

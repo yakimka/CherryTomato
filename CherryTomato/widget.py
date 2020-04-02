@@ -43,6 +43,7 @@ class QRoundPushbutton(QPushButton):
 class QRoundProgressBar(QRoundProgressBar_):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.useSystemFont = True
         self.m_second_format = ''
 
         self.setFormat('')
@@ -98,19 +99,24 @@ class QRoundProgressBar(QRoundProgressBar_):
     ):
         if not self.m_format:
             return
-        f = QFont(self.font())
-        f.setPixelSize(10)
-        fm = QFontMetricsF(f)
+
+        if self.useSystemFont:
+            font = QFont(self.font())
+        else:
+            font = QFont('Noto Sans')
+
+        font.setPixelSize(10)
+        fm = QFontMetricsF(font)
         maxWidth = fm.width(self.valueToText(self.m_max))
         delta = innerRadius / maxWidth
-        timeFontSize = f.pixelSize() * delta * 0.75
-        f.setPixelSize(int(timeFontSize))
-        p.setFont(f)
+        timeFontSize = font.pixelSize() * delta * 0.75
+        font.setPixelSize(int(timeFontSize))
+        p.setFont(font)
         timeTextRect = QRectF(firstRect)
         tomatoesTextRect = QRectF(secondRect)
         p.setPen(self.palette().text().color())
         p.drawText(timeTextRect, Qt.AlignCenter | Qt.AlignBottom, self.valueToText(value))
         tomatoesFontSize = timeFontSize * 0.3
-        f.setPixelSize(int(tomatoesFontSize))
-        p.setFont(f)
+        font.setPixelSize(int(tomatoesFontSize))
+        p.setFont(font)
         p.drawText(tomatoesTextRect, Qt.AlignHCenter, self.m_second_format)

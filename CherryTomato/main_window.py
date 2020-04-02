@@ -85,6 +85,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
     @Qt.pyqtSlot(name='display')
     def display(self):
+        self.progress.useSystemFont = self.settings.useSystemFont
         self.progress.setFormat(self.timerProxy.getUpperText())
         self.progress.setSecondFormat(self.timerProxy.getBottomText())
         self.progress.setValue(self.timerProxy.getProgress())
