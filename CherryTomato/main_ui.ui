@@ -102,6 +102,7 @@ border-radius: 20px;</string>
     <addaction name="actionReset"/>
     <addaction name="actionSettings"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -118,6 +119,11 @@ border-radius: 20px;</string>
   <action name="actionReset">
    <property name="text">
     <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string> Quit</string>
    </property>
   </action>
  </widget>

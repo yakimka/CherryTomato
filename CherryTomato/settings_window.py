@@ -18,22 +18,20 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.setWindowIcon(QIcon(APP_ICON))
         self.settings = CherryTomatoSettings.createQT()
 
-        self.stateTomato.setValue(int(self.settings.stateTomato / 60))
-        self.stateBreak.setValue(int(self.settings.stateBreak / 60))
-        self.stateLongBreak.setValue(int(self.settings.stateLongBreak / 60))
-        self.repeat.setValue(self.settings.repeat)
-
-        self.useSystemFont.setChecked(self.settings.useSystemFont)
-        self.notification.setChecked(self.settings.notification)
-        self.interrupt.setChecked(self.settings.interrupt)
-        self.autoStopTomato.setChecked(self.settings.autoStopTomato)
-        self.autoStopBreak.setChecked(self.settings.autoStopBreak)
-        self.switchToTomatoOnAbort.setChecked(self.settings.switchToTomatoOnAbort)
-
-        self.afterStartCommand.setText(self.settings.afterStartCommand)
-        self.afterStopCommand.setText(self.settings.afterStopCommand)
-        self.onTomatoCommand.setText(self.settings.onTomatoCommand)
-        self.onBreakCommand.setText(self.settings.onBreakCommand)
+        methods = {
+            int: 'setValue',
+            bool: 'setChecked',
+            str: 'setText',
+        }
+        # Example:
+        # self.stateTomato.setValue(self.settings.stateTomato)
+        # self.useSystemFont.setChecked(self.settings.useSystemFont)
+        # self.afterStartCommand.setText(self.settings.afterStartCommand)
+        for opt in self.settings.options:
+            if opt.ui:
+                value = opt.toRepresentation(getattr(self.settings, opt.name))
+                method = getattr(getattr(self, opt.name), methods[opt.type])
+                method(value)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Qt.Key_Escape:
@@ -47,19 +45,16 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
         self.closing.emit()
 
     def updateSettings(self):
-        self.settings.stateTomato = self.stateTomato.value() * 60
-        self.settings.stateBreak = self.stateBreak.value() * 60
-        self.settings.stateLongBreak = self.stateLongBreak.value() * 60
-        self.settings.repeat = self.repeat.value()
-
-        self.settings.useSystemFont = self.useSystemFont.isChecked()
-        self.settings.notification = self.notification.isChecked()
-        self.settings.interrupt = self.interrupt.isChecked()
-        self.settings.autoStopTomato = self.autoStopTomato.isChecked()
-        self.settings.autoStopBreak = self.autoStopBreak.isChecked()
-        self.settings.switchToTomatoOnAbort = self.switchToTomatoOnAbort.isChecked()
-
-        self.settings.afterStartCommand = self.afterStartCommand.text()
-        self.settings.afterStopCommand = self.afterStopCommand.text()
-        self.settings.onTomatoCommand = self.onTomatoCommand.text()
-        self.settings.onBreakCommand = self.onBreakCommand.text()
+        methods = {
+            int: 'value',
+            bool: 'isChecked',
+            str: 'text',
+        }
+        # Example:
+        # self.settings.stateTomato = self.stateTomato.value()
+        # self.settings.useSystemFont = self.useSystemFont.isChecked()
+        # self.settings.afterStartCommand = self.afterStartCommand.text()
+        for opt in self.settings.options:
+            if opt.ui:
+                value = getattr(getattr(self, opt.name), methods[opt.type])()
+                setattr(self.settings, opt.name, opt.toInternalValue(value))

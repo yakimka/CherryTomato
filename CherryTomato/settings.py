@@ -6,11 +6,23 @@ STATE_LONG_BREAK = 'stateLongBreak'
 
 
 class Option:
-    def __init__(self, name, default, type=None, deleter=False):
+    def __init__(self, name, default, type=None, deleter=False, ui=True):
         self.name = name
         self.default = default
         self.type = type
         self.deleter = deleter
+        self.ui = ui
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def toRepresentation(cls, value):
+        return value
+
+    @classmethod
+    def toInternalValue(cls, value):
+        return value
 
     def getTypeKwarg(self):
         kwargs = {}
@@ -20,16 +32,27 @@ class Option:
         return kwargs
 
 
+class MinutesOption(Option):
+    @classmethod
+    def toRepresentation(cls, value):
+        return int(value / 60)
+
+    @classmethod
+    def toInternalValue(cls, value):
+        return value * 60
+
+
 class CherryTomatoSettings:
     options = [
-        Option(STATE_TOMATO, 25 * 60, int),
-        Option(STATE_BREAK, 5 * 60, int),
-        Option(STATE_LONG_BREAK, 15 * 60, int),
+        MinutesOption(STATE_TOMATO, 25 * 60, int),
+        MinutesOption(STATE_BREAK, 5 * 60, int),
+        MinutesOption(STATE_LONG_BREAK, 15 * 60, int),
 
-        Option('size', QSize(400, 520), deleter=True),
-        Option('position', QPoint(50, 50), deleter=True),
+        Option('size', QSize(400, 520), deleter=True, ui=False),
+        Option('position', QPoint(50, 50), deleter=True, ui=False),
 
         Option('useSystemFont', False, bool),
+        Option('showTrayIcon', True, bool),
         Option('notification', True, bool),
         Option('interrupt', True, bool),
         Option('repeat', 4, int),

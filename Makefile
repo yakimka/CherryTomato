@@ -34,6 +34,9 @@ lint: flake ## Run all linters
 .PHONY: clean
 clean:  ## Clean project
 	rm -fr *.egg-info dist build
+	rm -rf contrib/pkg
+	rm -rf contrib/src
+	rm -rf contrib/*.tar.zst
 
 clean-pyc:  ## Clean pyc files
 	find . -name '*.pyc' -exec rm -f {} +
@@ -47,6 +50,12 @@ installdev: clean  ## Install dev
 .PHONY: sdist
 sdist: clean  ## Create a source distribution
 	python setup.py sdist
+
+.PHONY: compile-ui
+compile-ui:  ## Compile *.ui to *.py
+	pyuic5 CherryTomato/main_ui.ui -o CherryTomato/main_ui.py
+	pyuic5 CherryTomato/settings_ui.ui -o CherryTomato/settings_ui.py
+	pyuic5 CherryTomato/about_ui.ui -o CherryTomato/about_ui.py
 
 .PHONY: help
 help:
