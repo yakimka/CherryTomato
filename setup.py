@@ -31,7 +31,7 @@ setup(
     license=module.__license__,
     description=module.__doc__,
     url='https://github.com/yakimka/CherryTomato',
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=['tests', 'tests.*']),
     python_requires='>=3.6',
     install_requires=load_requirements('requirements.txt'),
     extras_require={'dev': load_requirements('requirements.dev.txt')},
