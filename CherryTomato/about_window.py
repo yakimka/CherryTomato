@@ -2,7 +2,7 @@ from PyQt5 import Qt
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 
-from CherryTomato import APP_ICON, VERSION
+from CherryTomato import APP_ICON, __version__ as VERSION
 from CherryTomato.about_ui import Ui_About
 
 
