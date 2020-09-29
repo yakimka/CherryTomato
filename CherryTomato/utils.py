@@ -46,6 +46,10 @@ class CommandExecutor:
         self._execute(self.settings.afterStopCommand, status)
 
     def onStateChange(self, status):
+        # Don't execute commands on reset
+        if not status.tomatoes:
+            return
+
         if status.state == STATE_TOMATO:
             self._execute(self.settings.onTomatoCommand, status)
         else:
