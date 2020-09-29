@@ -2,6 +2,7 @@ import os
 from functools import lru_cache
 
 from PyQt5 import Qt, QtCore
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QBrush, QColor, QPalette, QIcon, QKeySequence
 from PyQt5.QtMultimedia import QSound
 
@@ -37,6 +38,9 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
 
         self.actionReset.setShortcut(QKeySequence('Ctrl+R'))
         self.actionReset.triggered.connect(self.timerProxy.reset)
+
+        self.actionQuit.setShortcut(QKeySequence('Ctrl+Q'))
+        self.actionQuit.triggered.connect(QCoreApplication.quit)
 
     def setWindowSizeAndPosition(self):
         # Initial window size/pos last saved. Use default values for first time

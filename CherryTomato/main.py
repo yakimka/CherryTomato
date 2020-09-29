@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+
 import logging
 import sys
 
 from PyQt5 import Qt
 from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
 
-from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME
+from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME, APP_ICON
 from CherryTomato.main_window import CherryTomatoMainWindow
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.timer_proxy import TomatoTimerProxy
@@ -18,15 +21,33 @@ handler.setFormatter(CompactFormatter(logFmt, "%Y-%m-%d %H:%M:%S"))
 logger = makeLogger('CherryTomato', handler=handler, level='INFO')
 
 
+def setTrayIcon(app, mainWindow):
+    app.setQuitOnLastWindowClosed(False)
+    icon = QIcon(APP_ICON)
+    trayIcon = QSystemTrayIcon(parent=app, icon=icon)
+
+    menu = QMenu(parent=mainWindow)
+    quitAction = QAction(text='Quit', parent=menu)
+    quitAction.triggered.connect(app.quit)
+    menu.addAction(quitAction)
+
+    trayIcon.activated.connect(mainWindow.showNormal)
+    trayIcon.activated.connect(mainWindow.activateWindow)
+
+    trayIcon.setContextMenu(menu)
+    trayIcon.setVisible(True)
+
+
 def main():
     QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
     QCoreApplication.setApplicationName(APPLICATION_NAME)
 
     app = Qt.QApplication(sys.argv)
 
-    addCustomFont()
-
     settings = CherryTomatoSettings.createQT()
+
+    if not settings.useSystemFont:
+        addCustomFont()
 
     tomatoTimer = TomatoTimer(settings)
     timerProxy = TomatoTimerProxy(tomatoTimer)
@@ -37,6 +58,10 @@ def main():
     timerProxy.onStateChange.connect(cmdExec.onStateChange)
 
     watch = CherryTomatoMainWindow(timerProxy, settings)
+
+    if settings.showTrayIcon:
+        setTrayIcon(app, watch)
+
     watch.show()
 
     app.exec_()
