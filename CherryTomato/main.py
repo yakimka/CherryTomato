@@ -31,8 +31,7 @@ def setTrayIcon(app, mainWindow):
     quitAction.triggered.connect(app.quit)
     menu.addAction(quitAction)
 
-    trayIcon.activated.connect(mainWindow.showNormal)
-    trayIcon.activated.connect(mainWindow.activateWindow)
+    trayIcon.activated.connect(mainWindow.setFocusOnWindow)
 
     trayIcon.setContextMenu(menu)
     trayIcon.setVisible(True)

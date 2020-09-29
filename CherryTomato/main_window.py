@@ -120,11 +120,15 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.button.setColor(highlight)
 
     @Qt.pyqtSlot(name='setFocusOnWindowAndPlayNotification')
+    def setFocusOnWindow(self):
+        self.show()
+        self.activateWindow()
+        self.raise_()
+
+    @Qt.pyqtSlot(name='setFocusOnWindowAndPlayNotification')
     def setFocusOnWindowAndPlayNotification(self):
         if self.settings.interrupt:
-            self.raise_()
-            self.show()
-            self.activateWindow()
+            self.setFocusOnWindow()
             if self.windowState() == QtCore.Qt.WindowMinimized:
                 # Window is minimised. Restore it.
                 self.setWindowState(QtCore.Qt.WindowNoState)
