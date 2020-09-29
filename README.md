@@ -73,7 +73,7 @@ then
     # ...
 else
     # ...
-    # lesser than 10 logic
+    # lesser than 11 logic
     # ...
 fi
 
@@ -96,11 +96,23 @@ then
 fi
 ```
 
-Another example - you can simply play and pause music on Spotify with commands:
+Another examples:
 
-`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play`
+- You can play and pause music on Spotify with commands:
 
-`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause`
+    `dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play`
+    
+    `dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause`
+
+- You can send messages to your phone with KDE Connect:
+    
+    `kdeconnect-cli --ping-msg "It's Tomato Time!" -n "Phone name"`
+
+## Troubleshooting
+
+### Tomato icon shows as empty box
+
+See [#13](https://github.com/yakimka/CherryTomato/issues/13)
 
 ## Credits
 
