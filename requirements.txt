@@ -1,0 +1,2 @@
+PyQt5~=5.15.1
+qroundprogressbar~=1.0.0
