@@ -45,7 +45,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
                 self.resize(self.settings.size)
                 self.move(self.settings.position)
             except TypeError:
-                msg = f"Can't read window size and position settings. Restore to defaults"
+                msg = "Can't read window size and position settings. Restore to defaults"
                 self.logger.warning(msg)
                 del self.settings.size
                 del self.settings.position
