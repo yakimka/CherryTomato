@@ -18,25 +18,25 @@ from CherryTomato.utils import CommandExecutor, CompactFormatter, makeLogger, ad
 logFmt = '%(asctime)s:%(levelname)s:%(name)s:%(message)s'
 handler = logging.StreamHandler(sys.stdout)
 handler.setFormatter(CompactFormatter(logFmt, "%Y-%m-%d %H:%M:%S"))
-logger = makeLogger('CherryTomato', handler=handler, level='INFO')
+logger = makeLogger(None, handler=handler, level='INFO')
 
 
 def setTrayIcon(app, mainWindow):
     app.setQuitOnLastWindowClosed(False)
     icon = QIcon(APP_ICON)
-    trayIcon = QSystemTrayIcon(parent=app, icon=icon)
+    trayIcon = QSystemTrayIcon(parent=mainWindow, icon=icon)
 
     menu = QMenu(parent=mainWindow)
 
-    settingsAction = QAction(text='Settings', parent=menu)
+    settingsAction = QAction(text='Settings', parent=mainWindow)
     settingsAction.triggered.connect(mainWindow.showSettingsWindow)
     menu.addAction(settingsAction)
 
-    aboutAction = QAction(text='About', parent=menu)
+    aboutAction = QAction(text='About', parent=mainWindow)
     aboutAction.triggered.connect(mainWindow.showAboutWindow)
     menu.addAction(aboutAction)
 
-    quitAction = QAction(text='Quit', parent=menu)
+    quitAction = QAction(text='Quit', parent=mainWindow)
     quitAction.triggered.connect(app.quit)
     menu.addAction(quitAction)
 

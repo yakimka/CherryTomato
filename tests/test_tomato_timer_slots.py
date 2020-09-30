@@ -1,6 +1,16 @@
 import pytest
 
 
+def test_notifyOnStateChange(tomato, qtbot):
+    with qtbot.waitSignal(tomato.onStateChange, timeout=64):
+        tomato.notifyOnStateChange()
+
+
+def test_notifyOnStop(tomato, qtbot):
+    with qtbot.waitSignal(tomato.onStop, timeout=64):
+        tomato.notifyOnStop()
+
+
 def test_tick_once(tomato, qtbot):
     with qtbot.waitSignal(tomato.onChange, timeout=64):
         tomato.start()

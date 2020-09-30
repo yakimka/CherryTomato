@@ -1,10 +1,13 @@
+import os
 from unittest import mock
 from unittest.mock import Mock
 
 import pytest
 
+from CherryTomato import BASE_DIR
 from CherryTomato.settings import STATE_TOMATO, STATE_LONG_BREAK, STATE_BREAK
-from CherryTomato.utils import CommandExecutor
+from CherryTomato.utils import (CommandExecutor, addCustomFont, CompactFormatter, makeLogger,
+                                classLogger)
 
 
 @pytest.fixture
@@ -116,3 +119,51 @@ class TestCommandExecutor:
     ])
     def test_convertState(self, state, expected):
         assert expected == CommandExecutor._convertState(state)
+
+
+def test_addCustomFont(monkeypatch):
+    mqt_gui = Mock()
+    monkeypatch.setattr('CherryTomato.utils.QtGui', mqt_gui)
+
+    addCustomFont()
+
+    addApplicationFont = mqt_gui.QFontDatabase().addApplicationFont
+    addApplicationFont.assert_called_once_with(
+        os.path.join(BASE_DIR, 'media', 'NotoSans-Regular.ttf')
+    )
+
+
+def test_CompactFormatter(monkeypatch):
+    mformat = Mock()
+    monkeypatch.setattr('CherryTomato.utils.logging.Formatter.format', mformat)
+    mrecord = Mock()
+    mrecord.name = 'first.second.third'
+
+    CompactFormatter().format(mrecord)
+
+    mformat.assert_called_once_with(mrecord)
+    assert 'third' == mrecord.name
+
+
+@pytest.fixture
+def mgetLogger(monkeypatch):
+    mlogger = Mock()
+    monkeypatch.setattr('CherryTomato.utils.logging.getLogger', mlogger)
+    return mlogger
+
+
+def test_makeLogger(mgetLogger):
+    result = makeLogger('dummy', handler='my_handler', level='MY_INFO')
+
+    assert mgetLogger() == result
+    mgetLogger().addHandler.assert_called_with('my_handler')
+    mgetLogger().setLevel.assert_called_with('MY_INFO')
+    assert False is mgetLogger().propagate
+
+
+def test_classLogger(mgetLogger):
+    result = classLogger('my_path', 'my_class')
+
+    mgetLogger.assert_called_with('my_path')
+    mgetLogger().getChild.assert_called_with('my_class')
+    assert mgetLogger().getChild() == result

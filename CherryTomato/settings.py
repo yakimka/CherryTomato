@@ -78,7 +78,7 @@ class CherryTomatoSettings:
         opt = self._findOption(item)
         if opt:
             return self.settingsBackend.value(opt.name, opt.default, **opt.getTypeKwarg())
-        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}")
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{item}'")
 
     def _findOption(self, name):
         return next((opt for opt in self.options if opt.name == name), None)
