@@ -27,6 +27,15 @@ def setTrayIcon(app, mainWindow):
     trayIcon = QSystemTrayIcon(parent=app, icon=icon)
 
     menu = QMenu(parent=mainWindow)
+
+    settingsAction = QAction(text='Settings', parent=menu)
+    settingsAction.triggered.connect(mainWindow.showSettingsWindow)
+    menu.addAction(settingsAction)
+
+    aboutAction = QAction(text='About', parent=menu)
+    aboutAction.triggered.connect(mainWindow.showAboutWindow)
+    menu.addAction(aboutAction)
+
     quitAction = QAction(text='Quit', parent=menu)
     quitAction.triggered.connect(app.quit)
     menu.addAction(quitAction)

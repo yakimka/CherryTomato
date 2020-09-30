@@ -119,7 +119,7 @@ class CherryTomatoMainWindow(Qt.QMainWindow, Ui_MainWindow):
         self.progress.setPalette(palette)
         self.button.setColor(highlight)
 
-    @Qt.pyqtSlot(name='setFocusOnWindowAndPlayNotification')
+    @Qt.pyqtSlot(name='setFocusOnWindow')
     def setFocusOnWindow(self):
         self.show()
         self.activateWindow()
