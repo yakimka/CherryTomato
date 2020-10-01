@@ -8,7 +8,7 @@ __author__ = 'yakimka'
 __maintainer__ = __author__
 __email__ = 'ss.yakim@gmail.com'
 __license__ = 'GPL-3.0'
-__version__ = '0.5.0'
+__version__ = '0.6.1'
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
