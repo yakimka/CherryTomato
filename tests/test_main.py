@@ -44,8 +44,8 @@ def test_use_system_font():
 
 
 def test_not_use_system_font():
-    main.CherryTomatoSettings.createQT().useSystemFont = True
+    main.CherryTomatoSettings.createQT().useSystemFont = False
 
     main.main()
 
-    main.QSystemTrayIcon.assert_called()
+    main.addCustomFont.assert_called()
