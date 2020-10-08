@@ -13,15 +13,23 @@ def default_settings():
         'stateTomato': 100,
         'stateBreak': 25,
         'stateLongBreak': 50,
+
+        'size': QSize(400, 520),
+        'position': QPoint(50, 50),
+
+        'useSystemFont': True,
+        'showTrayIcon': True,
+        'notification': True,
+        'interrupt': True,
         'repeat': 4,
         'autoStopTomato': False,
         'autoStopBreak': False,
         'switchToTomatoOnAbort': True,
 
-        'size': QSize(400, 520),
-        'position': QPoint(50, 50),
-        'notification': True,
-        'interrupt': True,
+        'afterStartCommand': 'echo after_start',
+        'afterStopCommand': 'echo after_stop',
+        'onTomatoCommand': 'echo on_tomato',
+        'onBreakCommand': 'echo on_break',
     }
 
 
