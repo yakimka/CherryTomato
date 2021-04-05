@@ -27,13 +27,13 @@
 * KDE5
 * Xorg X server
 * FullHD Display
-* Python 3.7, 3.8
+* Python 3.7, 3.8, 3.9
 
 ## Installing
 
-CherryTomato can be used without installation (by executing `main.py`). However, you can install it.
-
 `python3 setup.py install`
+
+Now you can run this app with command `cherry_tomato`
 
 ### Arch Linux
 
