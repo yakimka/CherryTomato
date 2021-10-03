@@ -3,7 +3,7 @@
 
 # CherryTomato
 
-![Screenshot](assets/screenshot.png)
+![Screenshot](https://github.com/yakimka/CherryTomato/raw/master/assets/screenshot.png)
 
 ## Features
 
@@ -31,9 +31,26 @@
 
 ## Installing
 
-`python3 setup.py install`
+### pypi
 
-Now you can run this app with command `cherry_tomato`
+`pip install --user CherryTomato`
+
+Run in terminal: `cherry_tomato` (`~/.local/bin` must be in PATH environment variable)
+
+Also, you can install `*.desktop` file for executing CherryTomato from Application Launcher or krunner.
+
+Just create file `~/.local/share/applications/cherrytomato.desktop` with content (change Icon section):
+
+```
+[Desktop Entry]
+Type=Application
+Name=CherryTomato
+GenericName=Easy to use, flexible PyQt5 Pomodoro Technique timer
+Icon=/home/USER/.local/lib/pythonVERSION/site-packages/CherryTomato/media/icon.png
+Exec=$HOME/.local/bin/cherry_tomato
+Terminal=false
+Categories=Utility
+```
 
 ### Arch Linux
 
