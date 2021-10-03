@@ -47,9 +47,14 @@ clean-pyc:  ## Clean pyc files
 installdev: clean  ## Install dev
 	pip install -Ue '.[dev]'
 
-.PHONY: sdist
-sdist: clean  ## Create a source distribution
-	python setup.py sdist
+.PHONY: build
+build: clean  ## Create a source distribution
+	python setup.py sdist bdist_wheel
+	twine check dist/*
+
+.PHONY: upload_test
+upload_test:  ## Upload package to test.pypi
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: compile-ui
 compile-ui:  ## Compile *.ui to *.py
