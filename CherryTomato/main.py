@@ -52,6 +52,9 @@ def main():
 
     app = Qt.QApplication(sys.argv)
 
+    # https://bugs.documentfoundation.org/show_bug.cgi?id=125934
+    app.setDesktopFileName('cherrytomato.desktop')
+
     settings = CherryTomatoSettings.createQT()
 
     if not settings.useSystemFont:
