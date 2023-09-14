@@ -3,10 +3,9 @@
 import logging
 import sys
 
-from PyQt5 import Qt
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
+from PyQt6.QtCore import QCoreApplication
+from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
 
 from CherryTomato import ORGANIZATION_NAME, APPLICATION_NAME, APP_ICON
 from CherryTomato.main_window import CherryTomatoMainWindow
@@ -50,7 +49,7 @@ def main():
     QCoreApplication.setOrganizationName(ORGANIZATION_NAME)
     QCoreApplication.setApplicationName(APPLICATION_NAME)
 
-    app = Qt.QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
     # https://bugs.documentfoundation.org/show_bug.cgi?id=125934
     app.setDesktopFileName('cherrytomato.desktop')
@@ -75,7 +74,7 @@ def main():
 
     watch.show()
 
-    app.exec_()
+    app.exec()
 
 
 if __name__ == '__main__':

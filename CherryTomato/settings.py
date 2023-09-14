@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QSettings, QSize, QPoint
+from PyQt6.QtCore import QSettings, QSize, QPoint
 
 STATE_TOMATO = 'stateTomato'
 STATE_BREAK = 'stateBreak'

@@ -1,47 +1,50 @@
-![build](https://github.com/yakimka/CherryTomato/workflows/build/badge.svg)
-[![codecov](https://codecov.io/gh/yakimka/CherryTomato/branch/master/graph/badge.svg)](https://codecov.io/gh/yakimka/CherryTomato)
+# CherryTomato 🍅
 
-# CherryTomato
+Easy-to-use, flexible Pomodoro Technique timer built with PyQt5.
+
+[![build](https://github.com/yakimka/CherryTomato/workflows/build/badge.svg)](https://github.com/yakimka/CherryTomato/actions?query=workflow:build)
+[![codecov](https://codecov.io/gh/yakimka/CherryTomato/branch/master/graph/badge.svg)](https://codecov.io/gh/yakimka/CherryTomato)
 
 ![Screenshot](https://github.com/yakimka/CherryTomato/raw/master/assets/screenshot.png)
 
-## Features
+## 🌟 Features
 
-* Easy to use, flexible Pomodoro Technique timer.
-* Configurable intervals.
-* Notification after time is over.
-* Short and long break (after n tomatoes).
-* Auto stop tomato and break.
-* Tomatoes counter.
-* Switch to tomato when user press stop.
-* Execute custom commands when the timer is started, stopped or changed state.
+- **Simple Interface:** Get started with Pomodoro Technique in seconds.
+- **Configurable Intervals:** Tailor the timer to your needs.
+- **Notifications:** Know instantly when an interval ends.
+- **Short & Long Breaks:** Based on your progress.
+- **Tomato Tracker:** Keep count of your productivity.
+- **Switch State:** Quick toggle between tomato and break.
+- **Event Driven Commands:** Execute custom scripts on timer events.
 
-## Requirements
+## 📋 Requirements
 
-* Python>=3.6
-* PyQt5
+- Python (>= 3.6)
+- PyQt5
 
-## Tested on
+## ✅ Tested On
 
-* Arch Linux
-* KDE5
-* Xorg X server | Wayland session
-* FullHD Display
-* Python 3.7, 3.8, 3.9
+- Arch Linux
+- KDE5
+- Xorg X server | Wayland session
+- FullHD Display
+- Python versions: 3.7, 3.8, 3.9
 
-## Installing
+## 🔧 Installation
 
-### pypi
+### Using pip
 
-`pip install --user CherryTomato`
-
-Run in terminal: `cherry_tomato` (`~/.local/bin` must be in PATH environment variable)
-
-Also, you can install `*.desktop` file for executing CherryTomato from Application Launcher or krunner.
-
-Just create file `~/.local/share/applications/cherrytomato.desktop` with content (change Icon section):
-
+```bash
+pip install --user CherryTomato
 ```
+
+After installation, run `cherry_tomato` in the terminal. Ensure `~/.local/bin` is in your PATH.
+
+To add CherryTomato to your application launcher:
+1. Create a `.desktop` file at `~/.local/share/applications/cherrytomato.desktop`.
+2. Add the following content (replace `USER` and `VERSION` accordingly):
+
+```plaintext
 [Desktop Entry]
 Type=Application
 Name=CherryTomato
@@ -52,30 +55,30 @@ Terminal=false
 Categories=Utility
 ```
 
-### Arch Linux
+### For Arch Linux Users
 
-Also you can install [CherryTomato from AUR](https://aur.archlinux.org/packages/cherrytomato):
+Install from the AUR:
 
-`yaourt -S cherrytomato`
+```bash
+yaourt -S cherrytomato
+```
 
-## Execute custom commands
+Or, [Visit CherryTomato on AUR](https://aur.archlinux.org/packages/cherrytomato)
 
-You can specify custom commands that will be triggered on some events like the timer is started, stopped or changed state.
+## 💡 Execute Custom Commands
 
-Commands executed with python `subprocess.Popen` without `shell=True` option. It means that you can't use pipes or redirect output. You can read more about this in [subprocess documentation](https://docs.python.org/3/library/subprocess.html#subprocess.Popen).
+CherryTomato allows the execution of custom commands during certain timer events. 
 
-But if you need pipes and other shell features you can write your own script, place it in filesystem and execute from CherryTomato.
+❗ **Note:** Any process initiated by these commands won't terminate automatically upon CherryTomato's exit.
 
-**NOTE:** Processes started by commands that you executed will not be closed automatically on the CherryTomato exit.
- 
-Also, you can pass some info about timer to your custom commands with macros:
+Timer details can be passed to your scripts using macros:
 
-* `{tomatoes}` - number of completed tomatoes
-* `{state}` - current timer state ("tomato", "break" or "long_break")
+- `{tomatoes}` - Number of completed tomatoes.
+- `{state}` - Current timer state ("tomato", "break", or "long_break").
 
-Examples you can see on screenshot.
+### Examples
 
-`/opt/scripts/test.sh` from screenshot example:
+You can write a script and use it with CherryTomato:
 
 ```shell script
 #!/bin/bash
@@ -125,13 +128,11 @@ Another examples:
     
     `kdeconnect-cli --ping-msg "It's Tomato Time!" -n "Phone name"`
 
-## Troubleshooting
+## 🔍 Troubleshooting
 
-### Tomato icon shows as empty box
+- **Problem with Tomato Icon?** See this [issue thread](https://github.com/yakimka/CherryTomato/issues/13).
 
-See [#13](https://github.com/yakimka/CherryTomato/issues/13)
+## 📜 Credits
 
-## Credits
-
-* Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](www.flaticon.com)
-* [Notification sound](https://freesound.org/people/rhodesmas/sounds/342755/) by rhodesmas is licensed under CC BY 3.0  
+- Icons: Courtesy of [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](www.flaticon.com).
+- Notification Sound: ["Notification Sound"](https://freesound.org/people/rhodesmas/sounds/342755/) by rhodesmas under CC BY 3.0.

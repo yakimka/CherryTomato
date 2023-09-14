@@ -1,13 +1,13 @@
-from PyQt5 import QtWidgets, Qt
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget
 
 from CherryTomato import APP_ICON
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.settings_ui import Ui_Settings
 
 
-class Settings(QtWidgets.QWidget, Ui_Settings):
+class Settings(QWidget, Ui_Settings):
     closing = pyqtSignal()
 
     def __init__(self):
@@ -34,7 +34,7 @@ class Settings(QtWidgets.QWidget, Ui_Settings):
                 method(value)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Qt.Key_Escape:
+        if event.key() == Qt.Key.Key_Escape:
             self.close()
         else:
             super().keyPressEvent(event)

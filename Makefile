@@ -58,9 +58,9 @@ upload_test:  ## Upload package to test.pypi
 
 .PHONY: compile-ui
 compile-ui:  ## Compile *.ui to *.py
-	pyuic5 CherryTomato/main_ui.ui -o CherryTomato/main_ui.py
-	pyuic5 CherryTomato/settings_ui.ui -o CherryTomato/settings_ui.py
-	pyuic5 CherryTomato/about_ui.ui -o CherryTomato/about_ui.py
+	pyuic6 CherryTomato/main_ui.ui -o CherryTomato/main_ui.py
+	pyuic6 CherryTomato/settings_ui.ui -o CherryTomato/settings_ui.py
+	pyuic6 CherryTomato/about_ui.ui -o CherryTomato/about_ui.py
 
 .PHONY: help
 help:

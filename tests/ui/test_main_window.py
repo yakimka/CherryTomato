@@ -1,8 +1,8 @@
 from unittest.mock import Mock
 
 import pytest
-from PyQt5 import QtCore
-from PyQt5.QtCore import QSize, QPoint
+from PyQt6 import QtCore
+from PyQt6.QtCore import QSize, QPoint
 
 from CherryTomato.main_window import CherryTomatoMainWindow
 from CherryTomato.timer_proxy import TomatoTimerProxy
@@ -34,15 +34,15 @@ def main_window(request, main_window_in_tomato, main_window_in_break):
 
 
 def test_start_button_with_tomato(main_window, qtbot):
-    qtbot.mouseClick(main_window.button, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(main_window.button, QtCore.Qt.MouseButton.LeftButton)
 
     assert main_window.timerProxy.isRunning()
 
 
 def test_stop_button_with_tomato(main_window, qtbot):
-    qtbot.mouseClick(main_window.button, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(main_window.button, QtCore.Qt.MouseButton.LeftButton)
 
-    qtbot.mouseClick(main_window.button, QtCore.Qt.LeftButton)
+    qtbot.mouseClick(main_window.button, QtCore.Qt.MouseButton.LeftButton)
 
     assert main_window.timerProxy.isRunning() is False
 
@@ -267,16 +267,16 @@ def test_setFocusOnWindowAndPlayNotification_minimized(main_window_in_tomato, mo
     main_window_in_tomato.settings = Mock()
     main_window_in_tomato.settings.interrupt = True
     main_window_in_tomato.settings.notification = False
-    main_window_in_tomato.windowState.return_value = QtCore.Qt.WindowMinimized
+    main_window_in_tomato.windowState.return_value = QtCore.Qt.WindowState.WindowMinimized
 
     main_window_in_tomato.setFocusOnWindowAndPlayNotification()
 
-    main_window_in_tomato.setWindowState.assert_called_once_with(QtCore.Qt.WindowNoState)
+    main_window_in_tomato.setWindowState.assert_called_once_with(QtCore.Qt.WindowState.WindowNoState)
 
 
 @pytest.fixture
 def mock_QSound(mocker):
-    return mocker.patch('CherryTomato.main_window.QSound')
+    return mocker.patch('CherryTomato.main_window.QSoundEffect')
 
 
 def test_setFocusOnWindowAndPlayNotification_minimized_not_notificate(
@@ -302,4 +302,4 @@ def test_setFocusOnWindowAndPlayNotification_minimized_notificate(
 
     main_window_in_tomato.setFocusOnWindowAndPlayNotification()
 
-    mock_QSound.play.assert_called_once()
+    mock_QSound.return_value.play.assert_called_once()

@@ -122,13 +122,12 @@ class TestCommandExecutor:
 
 
 def test_addCustomFont(monkeypatch):
-    mqt_gui = Mock()
-    monkeypatch.setattr('CherryTomato.utils.QtGui', mqt_gui)
+    qfont_database_mock = Mock()
+    monkeypatch.setattr('CherryTomato.utils.QFontDatabase', qfont_database_mock)
 
     addCustomFont()
 
-    addApplicationFont = mqt_gui.QFontDatabase().addApplicationFont
-    addApplicationFont.assert_called_once_with(
+    qfont_database_mock.addApplicationFont.assert_called_once_with(
         os.path.join(BASE_DIR, 'media', 'NotoSans-Regular.ttf')
     )
 
