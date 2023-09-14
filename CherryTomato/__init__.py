@@ -1,4 +1,4 @@
-"""Easy to use, flexible PyQt5 Pomodoro Technique timer."""
+"""Easy to use, flexible PyQt6 Pomodoro Technique timer."""
 
 import os
 

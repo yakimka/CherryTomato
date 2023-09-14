@@ -47,7 +47,7 @@ def test_reset(tomato, mocker):
 
 
 def test_createTimer(tomato, mocker):
-    mQTimer = mocker.patch('CherryTomato.tomato_timer.Qt.QTimer')
+    mQTimer = mocker.patch('CherryTomato.tomato_timer.QTimer')
     mtick = mocker.patch('CherryTomato.tomato_timer.TomatoTimer.tick')
     tomato.tickTime = 100500
 
@@ -60,7 +60,7 @@ def test_createTimer(tomato, mocker):
 
 
 def test_createTimer_if_exists(tomato, mocker):
-    mQTimer = mocker.patch('CherryTomato.tomato_timer.Qt.QTimer')
+    mQTimer = mocker.patch('CherryTomato.tomato_timer.QTimer')
     mocker.patch('CherryTomato.tomato_timer.TomatoTimer.tick')
 
     tomato.createTimer()
@@ -194,7 +194,7 @@ def test_isTomato(tomato, state, expected):
 
 @pytest.fixture
 def mock_qt_timer(mocker):
-    return mocker.patch('CherryTomato.tomato_timer.Qt.QTimer')
+    return mocker.patch('CherryTomato.tomato_timer.QTimer')
 
 
 def test_running(mock_qt_timer, tomato):

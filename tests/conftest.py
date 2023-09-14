@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
 import pytest
-from PyQt5.QtCore import QSize, QPoint
+from PyQt6.QtCore import QSize, QPoint
 
 from CherryTomato.settings import CherryTomatoSettings
 from CherryTomato.tomato_timer import TomatoTimer

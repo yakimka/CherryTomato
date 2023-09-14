@@ -1,7 +1,6 @@
 from collections import UserString, namedtuple
 
-from PyQt5 import Qt
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 from CherryTomato.settings import STATE_TOMATO, STATE_LONG_BREAK, STATE_BREAK
 
@@ -45,7 +44,7 @@ class TomatoTimer(QObject):
     def createTimer(self):
         if hasattr(self, 'timer'):
             self.timer.timeout.disconnect()
-        self.timer = Qt.QTimer()
+        self.timer = QTimer()
         self.timer.setInterval(self.tickTime)
         self.timer.timeout.connect(self.tick)
 
@@ -101,7 +100,7 @@ class TomatoTimer(QObject):
     def progress(self):
         return int(100 - (self.seconds / self.state.time * 100))
 
-    @Qt.pyqtSlot(name='tick')
+    @pyqtSlot(name='tick')
     def tick(self):
         self.applyTick()
 

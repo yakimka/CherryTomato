@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
 import pytest
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from CherryTomato.widget import QRoundPushbutton, QPushButton
 
@@ -24,7 +24,7 @@ def test_init(button):
     QPushButton.__init__.assert_called_once_with(parent='parent')
     button.setFixedSize.assert_called_once_with(40, 40)
     button.setFlat.assert_called_once_with(True)
-    button.setAttribute.assert_called_once_with(QtCore.Qt.WA_TranslucentBackground)
+    button.setAttribute.assert_called_once_with(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
     assert (255, 37, 51) == button.color
     assert button.image.endswith('/CherryTomato/media/play.png')
     button.setStyleSheet.assert_called()

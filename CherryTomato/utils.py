@@ -3,7 +3,8 @@ import os
 import shlex
 import subprocess
 
-from PyQt5 import QtGui
+from PyQt6 import QtGui
+from PyQt6.QtGui import QFontDatabase
 
 from CherryTomato import BASE_DIR
 from CherryTomato.settings import STATE_TOMATO, STATE_BREAK, STATE_LONG_BREAK
@@ -91,5 +92,4 @@ class CommandExecutor:
 
 
 def addCustomFont():
-    fontDB = QtGui.QFontDatabase()
-    fontDB.addApplicationFont(os.path.join(BASE_DIR, 'media', 'NotoSans-Regular.ttf'))
+    QFontDatabase.addApplicationFont(os.path.join(BASE_DIR, 'media', 'NotoSans-Regular.ttf'))

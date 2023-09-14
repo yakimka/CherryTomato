@@ -1,6 +1,6 @@
-from PyQt5 import Qt
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QIcon
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 
 from CherryTomato import APP_ICON, __version__ as VERSION
 from CherryTomato.about_ui import Ui_About
@@ -18,7 +18,7 @@ class About(QtWidgets.QWidget, Ui_About):
         self.setWindowIcon(QIcon(APP_ICON))
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Qt.Key_Escape:
+        if event.key() == Qt.Key.Key_Escape:
             self.close()
         else:
             super().keyPressEvent(event)

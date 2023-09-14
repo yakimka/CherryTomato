@@ -2,8 +2,8 @@ from unittest import mock
 from unittest.mock import Mock
 
 import pytest
-from PyQt5 import QtCore
-from PyQt5.QtCore import QSize, QPoint
+from PyQt6 import QtCore
+from PyQt6.QtCore import QSize, QPoint, Qt
 
 from CherryTomato import settings_window as ct_settings_window
 from CherryTomato.settings import CherryTomatoSettings
@@ -53,15 +53,15 @@ def test_icon(settings_window):
 
 def test_close_on_esc_press(settings_window, qtbot):
     with mock.patch.object(settings_window, 'close'):
-        qtbot.keyClick(settings_window, QtCore.Qt.Key_Escape)
+        qtbot.keyClick(settings_window, Qt.Key.Key_Escape)
 
         settings_window.close.assert_called_once_with()
 
 
 @pytest.mark.parametrize('key', [
-    QtCore.Qt.Key_Space,
-    QtCore.Qt.Key_Q,
-    QtCore.Qt.Key_Backspace,
+    QtCore.Qt.Key.Key_Space,
+    QtCore.Qt.Key.Key_Q,
+    QtCore.Qt.Key.Key_Backspace,
 ])
 def test_not_close_on_other_keys(settings_window, qtbot, key):
     with mock.patch.object(settings_window, 'close'):
@@ -154,7 +154,7 @@ def settings_window_empty_settings(qtbot, monkeypatch, empty_settings):
 @pytest.mark.parametrize('option_name,value,expected', text_value_params)
 def test_updateSettings_text(settings_window_empty_settings, qtbot, option_name, value, expected):
     field = getattr(settings_window_empty_settings, option_name)
-    qtbot.keyClick(field, QtCore.Qt.Key_Delete)
+    qtbot.keyClick(field, QtCore.Qt.Key.Key_Delete)
     qtbot.keyClicks(field, value)
 
     settings_window_empty_settings.close()
@@ -166,7 +166,7 @@ def test_updateSettings_text(settings_window_empty_settings, qtbot, option_name,
 @pytest.mark.parametrize('option_name,_', bool_value_params)
 def test_updateSettings_bool(settings_window_empty_settings, qtbot, option_name, _):
     field = getattr(settings_window_empty_settings, option_name)
-    qtbot.keyClick(field, QtCore.Qt.Key_Space)
+    qtbot.keyClick(field, QtCore.Qt.Key.Key_Space)
 
     settings_window_empty_settings.close()
 

@@ -1,7 +1,7 @@
 from unittest import mock
 
 import pytest
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 from CherryTomato import __version__
 from CherryTomato.about_window import About
@@ -17,15 +17,15 @@ def about_window(qtbot):
 
 def test_close_on_esc_press(about_window, qtbot):
     with mock.patch.object(about_window, 'close'):
-        qtbot.keyClick(about_window, QtCore.Qt.Key_Escape)
+        qtbot.keyClick(about_window, QtCore.Qt.Key.Key_Escape)
 
         about_window.close.assert_called_once_with()
 
 
 @pytest.mark.parametrize('key', [
-    QtCore.Qt.Key_Space,
-    QtCore.Qt.Key_Q,
-    QtCore.Qt.Key_Backspace,
+    QtCore.Qt.Key.Key_Space,
+    QtCore.Qt.Key.Key_Q,
+    QtCore.Qt.Key.Key_Backspace,
 ])
 def test_not_close_on_other_keys(about_window, qtbot, key):
     with mock.patch.object(about_window, 'close'):
